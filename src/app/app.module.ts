@@ -14,6 +14,7 @@ import { PaymentFormComponent } from './payment-form/payment-form.component';
 import { PayLoansComponent } from './pay-loans/pay-loans.component';
 import { NotFoundComponent } from "./not-found/not-found.component";
 
+/** Primary entry point for the entire application. */
 @NgModule({
   declarations: [
     AppComponent,
