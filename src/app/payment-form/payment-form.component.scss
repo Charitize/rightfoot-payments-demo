@@ -1,0 +1,22 @@
+.form-card {
+  width: 100%;
+  max-width: 70%;
+  margin: 30px auto;
+  padding: 30px 0;
+  @media screen and (max-width: 620px) {
+    box-shadow: none;
+    margin-top: 15px;
+  }
+  &__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 400px;
+    }
+  }
+}
