@@ -12,6 +12,9 @@ import { MatButtonModule } from "@angular/material/button";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { PaymentFormComponent } from './payment-form/payment-form.component';
 import { PayLoansComponent } from './pay-loans/pay-loans.component';
+import { MatSelectModule } from "@angular/material/select";
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 /** Primary entry point for the entire application. */
 @NgModule({
@@ -29,6 +32,9 @@ import { PayLoansComponent } from './pay-loans/pay-loans.component';
     MatInputModule,
     MatCardModule,
     MatButtonModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     ReactiveFormsModule,
     FormsModule
   ],
