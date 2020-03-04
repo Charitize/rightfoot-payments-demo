@@ -11,6 +11,7 @@ const routes: Routes = [
   }
 ];
 
+/** Routing for the application module. */
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
