@@ -19,7 +19,7 @@ import { PayLoansComponent } from './pay-loans/pay-loans.component';
     AppComponent,
     HeaderComponent,
     PaymentFormComponent,
-    PayLoansComponent
+    PayLoansComponent,
   ],
   imports: [
     BrowserModule,
