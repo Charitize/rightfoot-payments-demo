@@ -12,7 +12,6 @@ import { MatButtonModule } from "@angular/material/button";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { PaymentFormComponent } from './payment-form/payment-form.component';
 import { PayLoansComponent } from './pay-loans/pay-loans.component';
-import { NotFoundComponent } from "./not-found/not-found.component";
 
 /** Primary entry point for the entire application. */
 @NgModule({
@@ -20,8 +19,7 @@ import { NotFoundComponent } from "./not-found/not-found.component";
     AppComponent,
     HeaderComponent,
     PaymentFormComponent,
-    PayLoansComponent,
-    NotFoundComponent
+    PayLoansComponent
   ],
   imports: [
     BrowserModule,
