@@ -1,5 +1,8 @@
 import { MailingAddress } from './mailing-address.interface';
 
+/**
+ * This interface describes request body for beneficiary creation request.
+ */
 export interface BeneficiaryRequest {
   /**
    * The given name of the beneficiary.

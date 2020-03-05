@@ -9,6 +9,10 @@ import { Observable } from 'rxjs';
 import { Beneficiary } from './shared/beneficiary.interface';
 import { StorageService } from './storage.service';
 
+/**
+ * This service is used for communication with the API server
+ * to create beneficiaries, make payments, etc.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +22,12 @@ export class ApiService {
   constructor(private httpClient: HttpClient) {
   }
 
-  createBeneficiary(formValue: DemographicsFormValue) {
+  /**
+   * Creates new beneficiary user based on the user provided demographics data.
+   * @param formValue Value of the demographics form group.
+   * @returns Observable<Beneficiary> newly created beneficiary user.
+   */
+  createBeneficiary(formValue: DemographicsFormValue): Observable<Beneficiary> {
     const request: BeneficiaryRequest = {
       ...formValue,
       dateOfBirth: formatDate(formValue.dateOfBirth, 'yyyy-MM-dd', 'en-US'),

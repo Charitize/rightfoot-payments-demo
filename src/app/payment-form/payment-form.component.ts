@@ -57,6 +57,7 @@ export class PaymentFormComponent implements OnInit {
     this.loading = true;
     this.form.disable();
     if (!this.isDemographicsInfoProvided) {
+      // This observable will probably change in RF-351.
       this.apiService.createBeneficiary(this.demographicsFormValue)
         .subscribe(beneficiary => {
           // TODO(RF-351) call plaid here.

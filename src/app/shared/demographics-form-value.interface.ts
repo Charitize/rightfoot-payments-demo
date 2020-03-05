@@ -1,5 +1,8 @@
 import { MailingAddress } from './mailing-address.interface';
 
+/**
+ * This interface corresponds to demographics form group's value.
+ */
 export interface DemographicsFormValue {
   /**
    * The given name of the beneficiary.
