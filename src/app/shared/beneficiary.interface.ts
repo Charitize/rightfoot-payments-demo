@@ -1,6 +1,6 @@
-import { BeneficiaryRequestInterface } from './beneficiary-request.interface';
+import { BeneficiaryRequest } from './beneficiary-request.interface';
 
-export interface BeneficiaryInterface extends BeneficiaryRequestInterface {
+export interface Beneficiary extends BeneficiaryRequest {
   uuid: string;
   paymentsEnabled: boolean;
 }

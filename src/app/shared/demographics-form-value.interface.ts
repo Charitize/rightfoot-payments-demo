@@ -1,6 +1,6 @@
-import { MailingAddressInterface } from './mailing-address.interface';
+import { MailingAddress } from './mailing-address.interface';
 
-export interface DemographicsFormValueInterface {
+export interface DemographicsFormValue {
   /**
    * The given name of the beneficiary.
    */
@@ -20,5 +20,5 @@ export interface DemographicsFormValueInterface {
   /**
    * Mailing address for the beneficiary, to be provided to payment provider.
    */
-  mailingAddress: MailingAddressInterface;
+  mailingAddress: MailingAddress;
 }

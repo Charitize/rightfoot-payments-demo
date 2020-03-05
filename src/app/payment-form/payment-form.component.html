@@ -124,9 +124,12 @@
         [disabled]="!form.valid"
         mat-flat-button
         color="primary">
-        Pay down student loan
+        <span *ngIf="!loading; else loader">Pay down student loan</span>
+        <ng-template #loader>
+          <mat-progress-spinner mode="indeterminate" [diameter]="26"></mat-progress-spinner>
+        </ng-template>
       </button>
-      <div *ngIf="!form.valid && form.dirty" class="mat-caption">
+      <div *ngIf="!form.valid && form.touched && form.enabled" class="mat-caption">
         Please fill all required fields.
         <div>
           Required fields are marked with *.

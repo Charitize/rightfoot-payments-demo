@@ -3,10 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { formatDate } from '@angular/common';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { environment } from '../environments/environment';
-import { DemographicsFormValueInterface } from './shared/demographics-form-value.interface';
-import { BeneficiaryRequestInterface } from './shared/beneficiary-request.interface';
+import { DemographicsFormValue } from './shared/demographics-form-value.interface';
+import { BeneficiaryRequest } from './shared/beneficiary-request.interface';
 import { Observable } from 'rxjs';
-import { BeneficiaryInterface } from './shared/beneficiary.interface';
+import { Beneficiary } from './shared/beneficiary.interface';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,26 +18,26 @@ export class ApiService {
   constructor(private httpClient: HttpClient) {
   }
 
-  createBeneficiary(formValue: DemographicsFormValueInterface) {
-    const request: BeneficiaryRequestInterface = {
+  createBeneficiary(formValue: DemographicsFormValue) {
+    const request: BeneficiaryRequest = {
       ...formValue,
       dateOfBirth: formatDate(formValue.dateOfBirth, 'yyyy-MM-dd', 'en-US'),
       phoneNumber: parsePhoneNumberFromString(formValue.phoneNumber).formatInternational()
     };
 
     // TODO remove mocks when the backend will be ready.
-    const mockResponse: BeneficiaryInterface = {
+    const mockResponse: Beneficiary = {
       ...request,
       uuid: 'uuid-1234',
       paymentsEnabled: true
     };
 
     // return this.httpClient.post(this.CREATE_BENEFICIARY_URL, request)
-    return new Observable<BeneficiaryInterface>(
+    return new Observable<Beneficiary>(
       (subscriber => {
         setTimeout(() => {
+          StorageService.storeUserId(mockResponse);
           subscriber.next(mockResponse);
-          console.log(mockResponse);
           subscriber.complete();
         }, 500);
       })

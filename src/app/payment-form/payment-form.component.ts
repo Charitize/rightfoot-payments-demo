@@ -3,10 +3,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UnitedStatesTerritories } from '../shared/us-states-and-territories';
 import { phoneNumberValidator } from '../shared/phone-number.validator';
 import { ApiService } from '../api.service';
+import { DemographicsFormValue } from '../shared/demographics-form-value.interface';
 
 /**
  * This component provides a form with a payment amount input and a "Pay" button.
- * If demographics information is not provided yet,
+ * If demographics information is not provided yet and plaid is not connected,
  * corresponding form fields will also be visible and available for filling.
  */
 @Component({
@@ -33,6 +34,9 @@ export class PaymentFormComponent implements OnInit {
   // TODO(RF-351) this value should be calculated dynamically.
   public isDemographicsInfoProvided = false;
 
+  /** To show a loader. */
+  public loading = false;
+
   ngOnInit() {
     // We add demographics related fields dynamically if they are not provided yet.
     if (!this.isDemographicsInfoProvided) {
@@ -47,11 +51,23 @@ export class PaymentFormComponent implements OnInit {
    * Form submit handler.
    */
   public onSubmit() {
-    // TODO(RF-350) create a real handler here.
+    if (!this.form.valid) {
+      return;
+    }
+    this.loading = true;
+    this.form.disable();
+    if (!this.isDemographicsInfoProvided) {
+      this.apiService.createBeneficiary(this.demographicsFormValue)
+        .subscribe(beneficiary => {
+          // TODO(RF-351) call plaid here.
+          this.loading = false;
+          this.form.enable();
+        });
+    }
   }
 
-  get demographicsForm(): FormGroup {
-    return this.form.get('demographics') as FormGroup;
+  get demographicsFormValue(): DemographicsFormValue {
+    return this.form.get('demographics').value as DemographicsFormValue;
   }
 
   private static initializeDemographicsFormGroup(): FormGroup {

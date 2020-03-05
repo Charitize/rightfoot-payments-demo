@@ -2,7 +2,7 @@
  * Interface for a mailing address for a beneficiary,
  * to be provided to payment provider.
  */
-export interface MailingAddressInterface {
+export interface MailingAddress {
   /**
    * Mandatory mailing address line.
    */

@@ -15,6 +15,8 @@ import { PayLoansComponent } from './pay-loans/pay-loans.component';
 import { MatSelectModule } from "@angular/material/select";
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { HttpClientModule } from '@angular/common/http';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 /** Primary entry point for the entire application. */
 @NgModule({
@@ -28,6 +30,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     MatToolbarModule,
     MatInputModule,
     MatCardModule,
@@ -35,6 +38,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatProgressSpinnerModule,
     ReactiveFormsModule,
     FormsModule
   ],
