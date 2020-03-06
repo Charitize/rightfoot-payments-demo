@@ -88,10 +88,6 @@ workflows:
     - lint:
         requires:
           - environment
-    - test:
-        requires:
-          - environment
     - build:
         requires:
           - lint
-          - test
