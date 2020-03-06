@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PayLoansComponent } from "./pay-loans/pay-loans.component";
+import { PayLoansComponent } from './pay-loans/pay-loans.component';
 
 
 const routes: Routes = [
@@ -17,7 +17,8 @@ const routes: Routes = [
 
 /** Routing for the application module. */
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [ RouterModule.forRoot(routes) ],
+  exports: [ RouterModule ]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}
