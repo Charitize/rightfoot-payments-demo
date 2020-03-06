@@ -46,6 +46,21 @@ jobs:
           name: Linting.
           command: yarn run lint
 
+  # Runs angular tests.
+  test:
+    docker:
+    - image: circleci/node:10-browsers
+
+    working_directory: /tmp/workspace
+
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+
+      - run:
+          name: Run angular tests.
+          command: yarn run test -- --watch=false
+
   # Builds a distributable bundle for production.
   build:
     docker:
