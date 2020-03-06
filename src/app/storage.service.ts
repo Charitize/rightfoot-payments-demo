@@ -5,7 +5,7 @@ import { Beneficiary } from './shared/beneficiary.interface';
  */
 export class StorageService {
   private static USER_ID_KEY = 'b_uuid';
-  private static PLAID_TOKEN_KEY = 'pt_key';
+  private static PLAID_TOKEN_KEY = 'pl_t';
   private static PAYMENTS_ENABLED_KEY = 'p_e';
   private static PAYMENT_UUID_KEY = 'p_u';
   private static storage = window.sessionStorage;
