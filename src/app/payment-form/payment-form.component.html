@@ -1,0 +1,17 @@
+<mat-card class="form-card">
+  <mat-card-content class="form-card__content">
+    <form (ngSubmit)="onSubmit()" [formGroup]="form">
+      <mat-form-field>
+        <mat-label>Payment Amount</mat-label>
+        <input matInput formControlName="amount" type="number" />
+      </mat-form-field>
+      <button
+        type="submit"
+        [disabled]="!form.valid"
+        mat-flat-button
+        color="primary">
+        Pay down student loan
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>
