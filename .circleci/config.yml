@@ -1,0 +1,93 @@
+version: 2.1
+
+jobs:
+  # Stands up environment, installing dependencies.
+  # Restores and saves our cache of node_modules.
+  environment:
+    docker:
+      - image: circleci/node:10-browsers
+
+    working_directory: /tmp/workspace
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - "**"
+
+  # Runs TypeScript linters checking for style or static analysis issues.
+  lint:
+    docker:
+      - image: circleci/node:10-browsers
+
+    working_directory: /tmp/workspace
+
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+
+      - run:
+          name: Linting.
+          command: yarn run lint
+
+  # Runs angular tests.
+  test:
+    docker:
+    - image: circleci/node:10-browsers
+
+    working_directory: /tmp/workspace
+
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+
+      - run:
+          name: Run angular tests.
+          command: yarn run test -- --watch=false
+
+  # Builds a distributable bundle for production.
+  build:
+    docker:
+    - image: circleci/node:10-browsers
+
+    working_directory: /tmp/workspace
+
+    steps:
+    - attach_workspace:
+        at: /tmp/workspace
+
+    - run: yarn run build -- --configuration=production
+
+    - persist_to_workspace:
+        root: /tmp/workspace
+        paths:
+        - dist
+
+workflows:
+  version: 2
+
+  test_and_deploy:
+    jobs:
+    - environment
+    - lint:
+        requires:
+          - environment
+    - build:
+        requires:
+          - lint

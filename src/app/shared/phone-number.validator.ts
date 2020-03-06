@@ -7,7 +7,6 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
  * parsePhoneNumberFromString returns undefined if it cannot parse
  * a phone number from a string.
  * isValid function is pretty simple in min package as it checks only string length.
- * @param control
  */
 export function phoneNumberValidator(control: AbstractControl): { [key: string]: any } | null {
   const isValid = control.value && !!parsePhoneNumberFromString(control.value);

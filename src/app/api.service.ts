@@ -54,7 +54,7 @@ export class ApiService {
           subscriber.complete();
         }, 500);
       })
-    )
+    );
   }
 
   /**
