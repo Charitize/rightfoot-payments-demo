@@ -37,6 +37,32 @@ export class PaymentFormComponent implements OnInit {
   /** To show a loader. */
   public loading = false;
 
+  private static initializeDemographicsFormGroup(): FormGroup {
+    return new FormGroup({
+      firstName: new FormControl(null, [ Validators.required ]),
+      lastName: new FormControl(null, [ Validators.required ]),
+      phoneNumber: new FormControl(null, [
+        Validators.required,
+        phoneNumberValidator
+      ]),
+      dateOfBirth: new FormControl(null, [ Validators.required ]),
+      mailingAddress: PaymentFormComponent.initializeMailingAddressFormGroup()
+    });
+  }
+
+  private static initializeMailingAddressFormGroup(): FormGroup {
+    return new FormGroup({
+      line1: new FormControl(null, [ Validators.required ]),
+      line2: new FormControl(null),
+      city: new FormControl(null, [ Validators.required ]),
+      state: new FormControl(null, [ Validators.required ]),
+      zipCode: new FormControl(null, [
+        Validators.required,
+        Validators.pattern('\\d{5}(-\\d{4})?')
+      ])
+    });
+  }
+
   ngOnInit() {
     // We add demographics related fields dynamically if they are not provided yet.
     if (!this.isDemographicsInfoProvided) {
@@ -69,31 +95,5 @@ export class PaymentFormComponent implements OnInit {
 
   get demographicsFormValue(): DemographicsFormValue {
     return this.form.get('demographics').value as DemographicsFormValue;
-  }
-
-  private static initializeDemographicsFormGroup(): FormGroup {
-    return new FormGroup({
-      firstName: new FormControl(null, [ Validators.required ]),
-      lastName: new FormControl(null, [ Validators.required ]),
-      phoneNumber: new FormControl(null, [
-        Validators.required,
-        phoneNumberValidator
-      ]),
-      dateOfBirth: new FormControl(null, [ Validators.required ]),
-      mailingAddress: PaymentFormComponent.initializeMailingAddressFormGroup()
-    });
-  }
-
-  private static initializeMailingAddressFormGroup(): FormGroup {
-    return new FormGroup({
-      line1: new FormControl(null, [ Validators.required ]),
-      line2: new FormControl(null),
-      city: new FormControl(null, [ Validators.required ]),
-      state: new FormControl(null, [ Validators.required ]),
-      zipCode: new FormControl(null, [
-        Validators.required,
-        Validators.pattern('\\d{5}(-\\d{4})?')
-      ])
-    });
   }
 }
