@@ -2,9 +2,15 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
+import { Environment, PlaidEnvironment } from './environment.interface';
+
+export const environment: Environment = {
   production: false,
-  apiUrl: 'localhost:9000'
+  apiUrl: 'localhost:9000',
+  plaid: {
+    environment: PlaidEnvironment.SANDBOX,
+    publicKey: '1773c898604f2bd4d68ecbbc8504f9'
+  }
 };
 
 /*

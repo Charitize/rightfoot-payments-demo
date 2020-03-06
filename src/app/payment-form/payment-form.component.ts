@@ -4,6 +4,11 @@ import { UnitedStatesTerritories } from '../shared/us-states-and-territories';
 import { phoneNumberValidator } from '../shared/phone-number.validator';
 import { ApiService } from '../api.service';
 import { DemographicsFormValue } from '../shared/demographics-form-value.interface';
+import { StorageService } from '../storage.service';
+import { combineLatest, Observable, of, throwError } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
+import { PlaidService } from '../plaid.service';
+import { Payment } from '../shared/payment.interface';
 
 /**
  * This component provides a form with a payment amount input and a "Pay" button.
@@ -16,7 +21,8 @@ import { DemographicsFormValue } from '../shared/demographics-form-value.interfa
   styleUrls: [ './payment-form.component.scss' ]
 })
 export class PaymentFormComponent implements OnInit {
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService,
+              private plaidService: PlaidService) {
   }
 
   /**
@@ -31,8 +37,10 @@ export class PaymentFormComponent implements OnInit {
    */
   public states = UnitedStatesTerritories;
 
-  // TODO(RF-351) this value should be calculated dynamically.
-  public isDemographicsInfoProvided = false;
+  /**
+   * Exposing this value to dynamically show/hide demographics related template.
+   */
+  public isDemographicsInfoProvided = !!StorageService.getStoredUserId();
 
   /** To show a loader. */
   public loading = false;
@@ -56,19 +64,100 @@ export class PaymentFormComponent implements OnInit {
     }
     this.loading = true;
     this.form.disable();
-    if (!this.isDemographicsInfoProvided) {
-      // This observable will probably change in RF-351.
-      this.apiService.createBeneficiary(this.demographicsFormValue)
-        .subscribe(beneficiary => {
-          // TODO(RF-351) call plaid here.
-          this.loading = false;
-          this.form.enable();
-        });
-    }
+
+    this.createPayment().subscribe(
+      () => {
+        this.loading = false;
+        this.form.enable();
+      },
+      (error) => {
+        // Very basic error handling.
+        StorageService.clearAll();
+        console.error(error);
+        console.info('Something went wrong and the application state is cleared. ' +
+          'Please reload this page and try again.');
+      });
   }
 
-  get demographicsFormValue(): DemographicsFormValue {
+  /**
+   * Performs all required actions based on currently available data
+   * to create a payment.
+   */
+  private createPayment(): Observable<Payment> {
+    return combineLatest([
+      this.getUserIdStream(),
+      this.getPlaidTokenStream()
+    ]).pipe(
+      take(1),
+      switchMap(([uuid, plaidToken]) => {
+        return this.getPaymentsEnabledStream(uuid, plaidToken);
+      }),
+      switchMap(paymentsEnabled => {
+        if (paymentsEnabled) {
+          return this.apiService.createPayment(
+            StorageService.getStoredUserId(),
+            this.amount
+          )
+        }
+        return throwError('Payments are not enabled. ' +
+          'Something went wrong with linking the user with the plaid token.');
+      })
+    )
+  }
+
+  /**
+   * Returns cached user id if present or performs create beneficiary request otherwise.
+   */
+  private getUserIdStream(): Observable<string> {
+    const storedUserId = StorageService.getStoredUserId();
+    if (!storedUserId) {
+      return this.apiService.createBeneficiary(this.demographicsFormValue)
+        .pipe(map(beneficiary => beneficiary.uuid));
+    }
+    return of(storedUserId);
+  }
+
+  /**
+   * Returns cached plaid token if present or launches Plaid Link otherwise.
+   */
+  private getPlaidTokenStream(): Observable<string> {
+    const storedToken = StorageService.getStoredPlaidToken();
+    if (!storedToken) {
+      return this.plaidService.addPlaidLoan()
+        .pipe(map(plaidResponse => plaidResponse.token));
+    }
+    return of(storedToken);
+  }
+
+  /**
+   * Returns cached payments enabled value if present or connects plaid token to a user otherwise.
+   * @param beneficiaryUuid
+   * @param token
+   */
+  private getPaymentsEnabledStream(beneficiaryUuid: string, token: string): Observable<boolean> {
+    const storedPaymentsEnabled = StorageService.getStoredPaymentsEnabled();
+    // If stored payments is null it means it wasn't set yet
+    // so addPlaidToken request hasn't been performed yet.
+    if (storedPaymentsEnabled === null) {
+      return this.apiService.addPlaidToken(beneficiaryUuid, token)
+        .pipe(map(beneficiary => beneficiary.paymentsEnabled));
+    }
+    return of(storedPaymentsEnabled);
+  }
+
+  private get demographicsFormValue(): DemographicsFormValue {
     return this.form.get('demographics').value as DemographicsFormValue;
+  }
+
+  /**
+   * Returns amount value as a float.
+   */
+  private get amount(): number {
+    const value = this.form.get('amount').value;
+    if (value === undefined) {
+      return null;
+    }
+    return parseFloat(value);
   }
 
   private static initializeDemographicsFormGroup(): FormGroup {
