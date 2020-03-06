@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 /**
  * This component provides a form with a payment amount input and a "Pay" button,
