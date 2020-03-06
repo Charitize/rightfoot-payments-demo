@@ -60,7 +60,7 @@ export class PlaidService {
   }
 
   /**
-   * Launches Plaid link and returns created loans if any.
+   * Launches Plaid Link.
    */
   public addPlaidLoan(): Observable<PlaidOnSuccessArgs> {
     return this.handlePlaidLoan(this.config).pipe(
