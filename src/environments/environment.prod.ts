@@ -5,7 +5,7 @@ export const environment: Environment = {
   // TODO(RF-363) Change to real API URL.
   apiUrl: 'localhost:9000',
   plaid: {
-    environment: PlaidEnvironment.PRODUCTION,
+    environment: PlaidEnvironment.SANDBOX,
     publicKey: '1773c898604f2bd4d68ecbbc8504f9'
   }
 };

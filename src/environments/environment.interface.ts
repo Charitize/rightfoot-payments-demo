@@ -16,22 +16,14 @@ export interface Environment {
 
 
 /**
- * Three deployment environments a single public client key can represent.
+ * Plaid supports more deployment environments, but in this app we will use only sandbox.
  */
 export enum PlaidEnvironment {
-  /** Development supports up to 100 real accounts. */
-  DEVELOPMENT = 'development',
-
   /**
    * Sandbox uses the same fake credentials for all institutions to create a
    * mocked environment.
    */
   SANDBOX = 'sandbox',
-
-  /**
-   * Live data environment used only for the actual application.
-   */
-  PRODUCTION = 'production',
 }
 
 /**
