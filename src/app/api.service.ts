@@ -10,6 +10,7 @@ import { Beneficiary } from './shared/beneficiary.interface';
 import { StorageService } from './storage.service';
 import { Payment } from './shared/payment.interface';
 import { PaymentStatus } from './shared/payment-status.enum';
+import { tap } from 'rxjs/operators';
 
 /**
  * This service is used for communication with the API server
@@ -45,16 +46,18 @@ export class ApiService {
       paymentsEnabled: true
     };
 
-    // return this.httpClient.post(this.CREATE_BENEFICIARY_URL, request)
-    return new Observable<Beneficiary>(
-      (subscriber => {
-        setTimeout(() => {
-          StorageService.storeUserId(mockResponse);
-          subscriber.next(mockResponse);
-          subscriber.complete();
-        }, 500);
-      })
-    );
+    return this.httpClient.post<Beneficiary>(this.CREATE_BENEFICIARY_URL, request, {
+      headers: {'Authorization': 'secure-private-key'}
+    }).pipe(tap(value => console.log(value)));
+    // return new Observable<Beneficiary>(
+    //   (subscriber => {
+    //     setTimeout(() => {
+    //       StorageService.storeUserId(mockResponse);
+    //       subscriber.next(mockResponse);
+    //       subscriber.complete();
+    //     }, 500);
+    //   })
+    // );
   }
 
   /**
