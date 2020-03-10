@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<app-payment-form *ngIf="!(isPaymentCreated$ | async); else success">
+<app-payment-form *ngIf="(isPaymentCreated$ | async) === false; else success">
 </app-payment-form>
 
 <ng-template #success>

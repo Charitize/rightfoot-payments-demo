@@ -130,7 +130,6 @@ export class ApiService {
     return new Observable<Payment>(
       (subscriber => {
         setTimeout(() => {
-          const uuid = '1234-4321-4567-7654';
           StorageService.storePaymentUuid(uuid);
           subscriber.next({
             uuid,
