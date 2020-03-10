@@ -1,4 +1,5 @@
 import { Beneficiary } from './shared/beneficiary.interface';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * This static service is used to store required data for requests.
@@ -8,7 +9,16 @@ export class StorageService {
   private static PLAID_TOKEN_KEY = 'pl_t';
   private static PAYMENTS_ENABLED_KEY = 'p_e';
   private static PAYMENT_UUID_KEY = 'p_u';
+
   private static storage = window.sessionStorage;
+
+  private static storedPaymentUuidSubject: BehaviorSubject<string> =
+    new BehaviorSubject<string>(StorageService.getStoredPaymentUuid());
+
+  /**
+   * Returns stream with a currently stored payment uuid.
+   */
+  public static storedPaymentUuid$ = StorageService.storedPaymentUuidSubject.asObservable();
 
   /**
    * Returns cached user id.
@@ -30,6 +40,7 @@ export class StorageService {
    * @param token Public token obtained from Plaid using Rightfoot's Plaid public key.
    */
   public static storePlaidToken(token: string): void {
+    this.storedPaymentUuidSubject.next(token);
     this.storage.setItem(this.PLAID_TOKEN_KEY, token);
   }
 

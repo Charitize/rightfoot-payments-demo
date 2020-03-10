@@ -18,6 +18,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { HttpClientModule } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgxPlaidLinkModule } from 'ngx-plaid-link';
+import { PaymentSuccessComponent } from './payment-success/payment-success.component';
+import { SuccessCheckComponent } from './success-check/success-check.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 /** Primary entry point for the entire application. */
 @NgModule({
@@ -26,6 +29,8 @@ import { NgxPlaidLinkModule } from 'ngx-plaid-link';
     HeaderComponent,
     PaymentFormComponent,
     PayLoansComponent,
+    PaymentSuccessComponent,
+    SuccessCheckComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,6 +45,7 @@ import { NgxPlaidLinkModule } from 'ngx-plaid-link';
     MatDatepickerModule,
     MatNativeDateModule,
     MatProgressSpinnerModule,
+    MatExpansionModule,
     ReactiveFormsModule,
     FormsModule,
     NgxPlaidLinkModule
