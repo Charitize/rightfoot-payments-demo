@@ -98,6 +98,8 @@ export class PaymentFormComponent implements OnInit {
       },
       (error) => {
         // Very basic error handling.
+        this.loading = false;
+        this.form.enable();
         StorageService.clearAll();
         console.error(error);
         console.warn('Something went wrong and the application state is cleared. ' +

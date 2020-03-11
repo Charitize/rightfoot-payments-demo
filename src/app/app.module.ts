@@ -15,12 +15,13 @@ import { PayLoansComponent } from './pay-loans/pay-loans.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgxPlaidLinkModule } from 'ngx-plaid-link';
 import { PaymentSuccessComponent } from './payment-success/payment-success.component';
 import { SuccessCheckComponent } from './success-check/success-check.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { AuthInterceptor } from './auth.interceptor';
 
 /** Primary entry point for the entire application. */
 @NgModule({
@@ -50,7 +51,13 @@ import { MatExpansionModule } from '@angular/material/expansion';
     FormsModule,
     NgxPlaidLinkModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule {
