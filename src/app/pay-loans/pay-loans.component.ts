@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { StorageService } from '../storage.service';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 /**
  * This is a page container component for making loan payments
@@ -17,5 +17,15 @@ export class PayLoansComponent {
    * @link PaymentSuccessComponent
    * @link PaymentFormComponent
    */
-  public isPaymentCreated$ = StorageService.storedPaymentUuid$.pipe(map(id => !!id));
+  public isPaymentCreated$ = StorageService.storedPaymentUuid$.pipe(
+    map(id => !!id),
+    tap(() => {
+      // Fixes bug on mobile, when scroll didn't work after receiving token from plaid.
+      setTimeout(() => {
+        // When a displayed component is changed,
+        // scroll to the top of the page.
+        window.scroll(0, 0);
+      });
+    })
+  );
 }

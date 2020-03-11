@@ -52,8 +52,11 @@
   // Styles for mobile and small screens.
   @media screen and (max-width: 600px) {
     box-shadow: none;
-    height: 100vh;
+    height: calc(100vh - 64px);
     background: transparent;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
     &__content {
       background-color: transparent;
       .arrow {
@@ -61,7 +64,7 @@
       }
     }
     &__footer {
-      height: 100%;
+      flex: 1;
       justify-content: flex-start;
     }
   }
