@@ -38,7 +38,7 @@ export class ApiService {
     const mockResponse: Beneficiary = {
       ...request,
       uuid: 'uuid-1234',
-      paymentsEnabled: true
+      paymentsEnabled: false
     };
 
     // return this.httpClient.post(this.CREATE_BENEFICIARY_URL, request)
