@@ -1,4 +1,4 @@
-interface UnitedStatesTerritory {
+export interface UnitedStatesTerritory {
   /** The full, unabbreviated name of a territory. */
   name: string;
   /**
