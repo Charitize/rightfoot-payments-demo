@@ -17,7 +17,7 @@ import { StorageService } from './storage.service';
   providedIn: 'root'
 })
 export class ApiService {
-  private CREATE_BENEFICIARY_URL = `${environment.apiUrl}/beneficiaries`;
+  private static readonly CREATE_BENEFICIARY_URL = `${environment.apiUrl}/beneficiaries`;
 
   constructor(private httpClient: HttpClient) {
   }
