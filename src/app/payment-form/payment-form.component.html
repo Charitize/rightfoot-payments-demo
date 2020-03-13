@@ -123,7 +123,7 @@
         [disabled]="!form.valid"
         mat-flat-button
         color="primary">
-        <span *ngIf="!loading; else loader">Pay down student loan</span>
+        <span *ngIf="!loading; else loader">Perform Payment</span>
         <ng-template #loader>
           <mat-progress-spinner mode="indeterminate" [diameter]="26"></mat-progress-spinner>
         </ng-template>
