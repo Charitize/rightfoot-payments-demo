@@ -12,6 +12,12 @@ export interface Environment {
    * Base URL for all API requests.
    */
   apiUrl: string;
+
+  /**
+   * The key which is used as an Authorization header for Rightfoot Public API
+   * requests.
+   */
+  personalApiKey: string;
 }
 
 
