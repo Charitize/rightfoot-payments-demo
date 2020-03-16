@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Subscription } from 'rxjs';
 import { Payment } from '../shared/payment.interface';
