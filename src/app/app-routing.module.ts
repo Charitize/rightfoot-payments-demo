@@ -8,6 +8,10 @@ const routes: Routes = [
     path: '',
     component: PayLoansComponent,
     pathMatch: 'full'
+  },
+  {
+    path: '**',
+    redirectTo: ''
   }
 ];
 
