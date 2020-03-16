@@ -1,0 +1,71 @@
+.success-card {
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 600px;
+  margin: 30px auto;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #FFF;
+    z-index: 10;
+    padding: 30px 0;
+    position: relative;
+    box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.15);
+    h1 {
+      margin-top: 16px;
+    }
+    // Visible as a white triangle between content and footer blocks.
+    .arrow {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      bottom: -10px;
+      background: #FFF;
+      transform: rotate(45deg);
+      box-shadow: 5px 5px 4px -3px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  &__footer {
+    background: rgba(103, 58, 183, 0.5);
+    padding: 40px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    mat-expansion-panel {
+      margin-top: 15px;
+      max-width: 100%;
+      width: 100%;
+    }
+    pre {
+      overflow-x: auto;
+    }
+    mat-progress-spinner {
+      margin: 0 auto;
+    }
+  }
+
+  // Styles for mobile and small screens.
+  @media screen and (max-width: 600px) {
+    box-shadow: none;
+    height: calc(100vh - 64px);
+    background: transparent;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    &__content {
+      background-color: transparent;
+      .arrow {
+        background: #FCFCFC;
+      }
+    }
+    &__footer {
+      flex: 1;
+      justify-content: flex-start;
+    }
+  }
+}

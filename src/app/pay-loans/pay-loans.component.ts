@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { StorageService } from '../storage.service';
+import { map, tap } from 'rxjs/operators';
 
 /**
  * This is a page container component for making loan payments
@@ -10,4 +12,20 @@ import { Component } from '@angular/core';
   styleUrls: ['./pay-loans.component.scss']
 })
 export class PayLoansComponent {
+  /**
+   * When true, shows PaymentSuccessComponent, otherwise PaymentFormComponent is rendered.
+   * @link PaymentSuccessComponent
+   * @link PaymentFormComponent
+   */
+  public isPaymentCreated$ = StorageService.storedPaymentUuid$.pipe(
+    map(id => !!id),
+    tap(() => {
+      // Fixes bug on mobile, when scroll didn't work after receiving token from plaid.
+      setTimeout(() => {
+        // When a displayed component is changed,
+        // scroll to the top of the page.
+        window.scroll(0, 0);
+      });
+    })
+  );
 }

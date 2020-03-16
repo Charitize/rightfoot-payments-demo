@@ -1,0 +1,21 @@
+<div class="success-card mat-typography">
+  <div class="success-card__content">
+    <app-success-check></app-success-check>
+    <h1>Payment Accepted</h1>
+    <div class="arrow"></div>
+  </div>
+  <div class="success-card__footer">
+    <button mat-raised-button color="primary" (click)="checkPayment(true)">
+      Check Status
+    </button>
+    <mat-expansion-panel #expansionPanel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>View response from the API.</mat-panel-title>
+      </mat-expansion-panel-header>
+      <pre *ngIf="!loading; else loader">{{(payment || error) | json}}</pre>
+      <ng-template #loader>
+        <mat-progress-spinner mode="indeterminate" [diameter]="55"></mat-progress-spinner>
+      </ng-template>
+    </mat-expansion-panel>
+  </div>
+</div>
