@@ -6,12 +6,17 @@ import { StorageService } from '../storage.service';
 import { switchMap } from 'rxjs/operators';
 import { MatExpansionPanel } from '@angular/material/expansion';
 
+/**
+ * This component is used as a success page which is shown after payment is made.
+ * It loads updated data about the payment, allows user to reload such data,
+ * and prints response from the Rightfoot Public API inside the expansion panel.
+ */
 @Component({
   selector: 'app-payment-success',
   templateUrl: './payment-success.component.html',
   styleUrls: ['./payment-success.component.scss']
 })
-export class PaymentSuccessComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PaymentSuccessComponent implements AfterViewInit, OnDestroy {
   private subscription: Subscription;
   public payment: Payment;
   public loading = false;
@@ -20,9 +25,6 @@ export class PaymentSuccessComponent implements OnInit, AfterViewInit, OnDestroy
   expansionPanel!: MatExpansionPanel;
 
   constructor(private apiService: ApiService) {
-  }
-
-  ngOnInit(): void {
     this.checkPayment();
   }
 
@@ -44,6 +46,9 @@ export class PaymentSuccessComponent implements OnInit, AfterViewInit, OnDestroy
     }
     if (expandPanel) {
       this.expansionPanel.open();
+    }
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
     this.loading = true;
     this.subscription = StorageService.storedPaymentUuid$.pipe(

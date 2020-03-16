@@ -3,6 +3,8 @@ import { BehaviorSubject } from 'rxjs';
 
 /**
  * This static service is used to store required data for requests.
+ * It roughly emulates this application's API backend server where useful data about
+ * objects we create through Rightfoot Public API is stored.
  */
 export class StorageService {
   private static USER_ID_KEY = 'b_uuid';

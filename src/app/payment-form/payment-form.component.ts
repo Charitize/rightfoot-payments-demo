@@ -127,8 +127,9 @@ export class PaymentFormComponent implements OnInit {
             this.amount
           );
         }
-        return throwError('Payments are not enabled. ' +
-          'Something went wrong with linking the user with the plaid token.');
+        return throwError(
+            'Payments are not enabled. ' +
+            'Something went wrong with linking the user with the plaid token.');
       })
     );
   }
