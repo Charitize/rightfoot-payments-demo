@@ -19,7 +19,7 @@ export class StorageService {
   private static readonly storage = window.sessionStorage;
 
   private storedPaymentUuidSubject: BehaviorSubject<string> =
-    new BehaviorSubject<string>(StorageService.getStoredPaymentUuid());
+    new BehaviorSubject<string>(this.getStoredPaymentUuid());
 
   /**
    * Returns stream with a currently stored payment uuid.
