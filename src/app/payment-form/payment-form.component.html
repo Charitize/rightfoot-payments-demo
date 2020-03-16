@@ -4,7 +4,7 @@
       <!--   Form group for collecting demographics information.   -->
       <ng-container *ngIf="!isDemographicsInfoProvided">
         <h2 class="mat-title">
-          Please provide your payment information below to connect your loans.
+          First, please provide some information about yourself.
         </h2>
         <div formGroupName="demographics" class="form-group-container">
           <mat-form-field>
@@ -105,7 +105,7 @@
       </ng-container>
 
       <h2 class="mat-title">
-        How much money do you want to put in to your debts?
+        How much do you want to pay towards your student loans?
       </h2>
       <mat-form-field>
         <mat-label>Payment Amount</mat-label>
@@ -123,7 +123,7 @@
         [disabled]="!form.valid"
         mat-flat-button
         color="primary">
-        <span *ngIf="!loading; else loader">Pay down student loan</span>
+        <span *ngIf="!loading; else loader">Perform Payment</span>
         <ng-template #loader>
           <mat-progress-spinner mode="indeterminate" [diameter]="26"></mat-progress-spinner>
         </ng-template>

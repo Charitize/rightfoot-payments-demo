@@ -19,9 +19,9 @@ import { PaymentStatus } from './shared/payment-status.enum';
   providedIn: 'root'
 })
 export class ApiService {
-  private CREATE_BENEFICIARY_URL = `${environment.apiUrl}/beneficiaries`;
-  private ADD_PLAID_TOKEN_URL = `${environment.apiUrl}/beneficiaries/addPlaidToken`;
-  private PAYMENTS_URL = `${environment.apiUrl}/payments`;
+  private static readonly CREATE_BENEFICIARY_URL = `${environment.apiUrl}/beneficiaries`;
+  private static readonly ADD_PLAID_TOKEN_URL = `${environment.apiUrl}/beneficiaries/addPlaidToken`;
+  private static readonly PAYMENTS_URL = `${environment.apiUrl}/payments`;
 
   constructor(private httpClient: HttpClient) {
   }
@@ -42,7 +42,7 @@ export class ApiService {
     const mockResponse: Beneficiary = {
       ...request,
       uuid: 'uuid-1234',
-      paymentsEnabled: true
+      paymentsEnabled: false
     };
 
     // return this.httpClient.post(this.CREATE_BENEFICIARY_URL, request)
