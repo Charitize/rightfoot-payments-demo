@@ -17,6 +17,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { HttpClientModule } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgxPlaidLinkModule } from 'ngx-plaid-link';
 
 /** Primary entry point for the entire application. */
 @NgModule({
@@ -40,7 +41,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatNativeDateModule,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NgxPlaidLinkModule
   ],
   providers: [],
   bootstrap: [ AppComponent ]
