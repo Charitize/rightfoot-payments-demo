@@ -87,7 +87,7 @@ export class StorageService {
   /**
    * Returns cached payment's UUID.
    */
-  public static getStoredPaymentUuid(): string {
+  public getStoredPaymentUuid(): string {
     return StorageService.storage.getItem(StorageService.PAYMENT_UUID_KEY);
   }
 
