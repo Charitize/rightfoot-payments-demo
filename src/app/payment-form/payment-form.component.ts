@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UnitedStatesTerritories } from '../shared/us-states-and-territories';
 import { phoneNumberValidator } from '../shared/phone-number.validator';
-import { ApiService } from '../api.service';
+import { RightfootApiService } from '../rightfoot-api.service';
 import { DemographicsFormValue } from '../shared/demographics-form-value.interface';
 import { StorageService } from '../storage.service';
 import { combineLatest, Observable, of, throwError } from 'rxjs';
@@ -21,7 +21,7 @@ import { Payment } from '../shared/payment.interface';
   styleUrls: [ './payment-form.component.scss' ]
 })
 export class PaymentFormComponent implements OnInit {
-  constructor(private apiService: ApiService,
+  constructor(private apiService: RightfootApiService,
               private plaidService: PlaidService) {
   }
 

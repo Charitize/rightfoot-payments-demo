@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ApiService } from '../api.service';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
+import { RightfootApiService } from '../rightfoot-api.service';
 import { Subscription } from 'rxjs';
 import { Payment } from '../shared/payment.interface';
 import { StorageService } from '../storage.service';
@@ -24,7 +24,7 @@ export class PaymentSuccessComponent implements AfterViewInit, OnDestroy {
   @ViewChild('expansionPanel', { static: true })
   expansionPanel!: MatExpansionPanel;
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: RightfootApiService) {
     this.checkPayment();
   }
 
