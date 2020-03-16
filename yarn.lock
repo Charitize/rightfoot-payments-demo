@@ -4593,6 +4593,14 @@ levenary@^1.1.0, levenary@^1.1.1:
   dependencies:
     leven "^3.1.0"
 
+libphonenumber-js@^1.7.45:
+  version "1.7.46"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.46.tgz#72e5bc1337ec3898e8a00971161fa16cb542ccf9"
+  integrity sha512-NrNz2+OW/7lb4HnKDbcYOMCY0SOzCa7EHFY0hHeHl9JMJmpvTmonPaLiMAE1M+K1HWCsXtGdDj9AkOmr5DKqIQ==
+  dependencies:
+    minimist "^1.2.0"
+    xml2js "^0.4.17"
+
 license-webpack-plugin@2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/license-webpack-plugin/-/license-webpack-plugin-2.1.2.tgz#63f7c571537a450ec47dc98f5d5ffdbca7b3b14f"
