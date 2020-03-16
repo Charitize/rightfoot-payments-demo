@@ -24,7 +24,8 @@ export class PaymentSuccessComponent implements AfterViewInit, OnDestroy {
   @ViewChild('expansionPanel', { static: true })
   expansionPanel!: MatExpansionPanel;
 
-  constructor(private apiService: RightfootApiService) {
+  constructor(private apiService: RightfootApiService,
+              private storageService: StorageService) {
     this.checkPayment();
   }
 
@@ -51,7 +52,7 @@ export class PaymentSuccessComponent implements AfterViewInit, OnDestroy {
       this.subscription.unsubscribe();
     }
     this.loading = true;
-    this.subscription = StorageService.storedPaymentUuid$.pipe(
+    this.subscription = this.storageService.storedPaymentUuid$.pipe(
       switchMap(uuid => this.apiService.getPayment(uuid))
     ).subscribe(payment => {
       this.payment = payment;

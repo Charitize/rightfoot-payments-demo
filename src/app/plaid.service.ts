@@ -28,7 +28,8 @@ type PlaidConfigWithoutListeners = Omit<UpdatedPlaidConfig, 'onSuccess' | 'onExi
   providedIn: 'root'
 })
 export class PlaidService {
-  constructor(private plaidLinkService: NgxPlaidLinkService) {
+  constructor(private plaidLinkService: NgxPlaidLinkService,
+              private storageService: StorageService) {
   }
 
   private config: PlaidConfigWithoutListeners = {
@@ -65,7 +66,7 @@ export class PlaidService {
   public addPlaidLoan(): Observable<PlaidOnSuccessArgs> {
     return this.handlePlaidLoan(this.config).pipe(
       map(plaidLinkResponse => {
-        StorageService.storePlaidToken(plaidLinkResponse.token);
+        this.storageService.storePlaidToken(plaidLinkResponse.token);
         return plaidLinkResponse;
       })
     );

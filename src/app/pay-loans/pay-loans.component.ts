@@ -12,12 +12,15 @@ import { map, tap } from 'rxjs/operators';
   styleUrls: ['./pay-loans.component.scss']
 })
 export class PayLoansComponent {
+  constructor(private storageService: StorageService) {
+  }
+
   /**
    * When true, shows PaymentSuccessComponent, otherwise PaymentFormComponent is rendered.
    * @link PaymentSuccessComponent
    * @link PaymentFormComponent
    */
-  public isPaymentCreated$ = StorageService.storedPaymentUuid$.pipe(
+  public isPaymentCreated$ = this.storageService.storedPaymentUuid$.pipe(
     map(id => !!id),
     tap(() => {
       // Fixes bug on mobile, when scroll didn't work after receiving token from plaid.

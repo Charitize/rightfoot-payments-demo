@@ -3,10 +3,10 @@
  */
 export enum PaymentStatus {
   /**
-   * Payment request accepted by processors.
+   * Payment request has been issued.
    * Will update over several days until payment is completed.
    */
-  ACCEPTED = 'ACCEPTED',
+  PENDING = 'PENDING',
   /** Payments verified to have been disbursed. */
   COMPLETED = 'COMPLETED',
   /** Payment is more than balance and note necessary. */
