@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  gcp-gcr: circleci/gcp-gcr@0.6.1
+
 jobs:
   # Stands up environment, installing dependencies.
   # Restores and saves our cache of node_modules.
@@ -79,6 +82,61 @@ jobs:
         paths:
         - dist
 
+  # Builds docker container and pushes to Google Container Repository.
+  push-image:
+    docker:
+    - image: google/cloud-sdk
+
+    working_directory: /tmp/workspace
+
+    steps:
+    - attach_workspace:
+        at: /tmp/workspace
+
+    - run:
+        name: Authenticate Google Cloud.
+        command: |
+          echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+          gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+          gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+          gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}
+          gcloud auth configure-docker
+
+    # Configure and setup docker.
+    - setup_remote_docker
+
+    - gcp-gcr/gcr-auth:
+        gcloud-service-key: GCLOUD_SERVICE_KEY
+        google-compute-zone: GOOGLE_COMPUTE_ZONE
+        google-project-id: GOOGLE_PROJECT_ID
+
+    - gcp-gcr/build-image:
+        google-project-id: GOOGLE_PROJECT_ID
+        image: rightfoot-payments-demo
+        registry-url: gcr.io
+        tag: $CIRCLE_SHA1
+
+    - gcp-gcr/push-image:
+        google-project-id: GOOGLE_PROJECT_ID
+        image: rightfoot-payments-demo
+        registry-url: gcr.io
+        tag: $CIRCLE_SHA1
+
+    - gcp-gcr/tag-image:
+        google-project-id: GOOGLE_PROJECT_ID
+        image: rightfoot-payments-demo
+        registry-url: gcr.io
+        source-tag: $CIRCLE_SHA1
+        target-tag: $(echo $CIRCLE_BRANCH | tr '/' '-')
+
+    - gcp-gcr/tag-image:
+        google-project-id: GOOGLE_PROJECT_ID
+        image: rightfoot-payments-demo
+        registry-url: gcr.io
+        source-tag: $CIRCLE_SHA1
+        target-tag: latest
+
+
 workflows:
   version: 2
 
@@ -91,3 +149,6 @@ workflows:
     - build:
         requires:
           - lint
+    - push-image:
+        requires:
+          - build
