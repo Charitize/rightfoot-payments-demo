@@ -4,8 +4,11 @@
       <!--   Form group for collecting demographics information.   -->
       <ng-container *ngIf="!isDemographicsInfoProvided">
         <h2 class="mat-title">
-          First, please provide some information about yourself.
+          Beneficiary Billing Information
         </h2>
+        <h3 class="mat-subtitle">
+          A few things about the person benefiting from this payment
+        </h3>
         <div formGroupName="demographics" class="form-group-container">
           <mat-form-field>
             <mat-label>First Name</mat-label>
@@ -105,8 +108,12 @@
       </ng-container>
 
       <h2 class="mat-title">
-        How much do you want to pay towards your student loans?
+        Payment Amount
       </h2>
+      <h3 class="mat-subtitle">
+        This much will be withdrawn from the app's funding source and sent to
+        selected loan
+      </h3>
       <mat-form-field>
         <mat-label>Payment Amount</mat-label>
         <input
