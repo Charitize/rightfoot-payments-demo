@@ -1,0 +1,52 @@
+.form-card {
+  width: 100%;
+  max-width: 70%;
+  margin: 30px auto;
+  padding: 30px 0;
+
+  // Remove card styling for smaller displays.
+  @media screen and (max-width: 620px) {
+    box-shadow: none;
+    margin-top: 15px;
+    background-color: transparent;
+    padding: 0 0 30px;
+    mat-form-field {
+      width: 100%;
+    }
+  }
+  &__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 400px;
+    }
+    .form-group-container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .mat-caption {
+      text-align: center;
+      margin-top: 0.5em;
+      font-size: 0.8em;
+    }
+    .mat-title {
+      margin: 0.5em 0;
+    }
+    mat-datepicker-toggle {
+      position: absolute;
+      right: 0;
+      bottom: -5px;
+    }
+    button[type=submit] {
+      height: 38px;
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

@@ -1,0 +1,194 @@
+version: 2.1
+
+orbs:
+  gcp-gcr: circleci/gcp-gcr@0.6.1
+  gcp-gke: circleci/gcp-gke@1.0.3
+
+jobs:
+  # Stands up environment, installing dependencies.
+  # Restores and saves our cache of node_modules.
+  environment:
+    docker:
+      - image: circleci/node:10-browsers
+
+    working_directory: /tmp/workspace
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - "**"
+
+  # Runs TypeScript linters checking for style or static analysis issues.
+  lint:
+    docker:
+      - image: circleci/node:10-browsers
+
+    working_directory: /tmp/workspace
+
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+
+      - run:
+          name: Linting.
+          command: yarn run lint
+
+  # Runs angular tests.
+  test:
+    docker:
+    - image: circleci/node:10-browsers
+
+    working_directory: /tmp/workspace
+
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+
+      - run:
+          name: Run angular tests.
+          command: yarn run test -- --watch=false
+
+  # Builds a distributable bundle for production.
+  build:
+    docker:
+    - image: circleci/node:10-browsers
+
+    working_directory: /tmp/workspace
+
+    steps:
+    - attach_workspace:
+        at: /tmp/workspace
+
+    - run: yarn run build -- --configuration=production
+
+    - persist_to_workspace:
+        root: /tmp/workspace
+        paths:
+        - dist
+
+  # Builds docker container and pushes to Google Container Repository.
+  push-image:
+    docker:
+    - image: google/cloud-sdk
+
+    working_directory: /tmp/workspace
+
+    steps:
+    - attach_workspace:
+        at: /tmp/workspace
+
+    - run:
+        name: Authenticate Google Cloud.
+        command: |
+          echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+          gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+          gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+          gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}
+          gcloud auth configure-docker
+
+    # Configure and setup docker.
+    - setup_remote_docker
+
+    - gcp-gcr/gcr-auth:
+        gcloud-service-key: GCLOUD_SERVICE_KEY
+        google-compute-zone: GOOGLE_COMPUTE_ZONE
+        google-project-id: GOOGLE_PROJECT_ID
+
+    - gcp-gcr/build-image:
+        google-project-id: GOOGLE_PROJECT_ID
+        image: rightfoot-payments-demo
+        registry-url: gcr.io
+        tag: $CIRCLE_SHA1
+
+    - gcp-gcr/push-image:
+        google-project-id: GOOGLE_PROJECT_ID
+        image: rightfoot-payments-demo
+        registry-url: gcr.io
+        tag: $CIRCLE_SHA1
+
+    - gcp-gcr/tag-image:
+        google-project-id: GOOGLE_PROJECT_ID
+        image: rightfoot-payments-demo
+        registry-url: gcr.io
+        source-tag: $CIRCLE_SHA1
+        target-tag: $(echo $CIRCLE_BRANCH | tr '/' '-')
+
+    - gcp-gcr/tag-image:
+        google-project-id: GOOGLE_PROJECT_ID
+        image: rightfoot-payments-demo
+        registry-url: gcr.io
+        source-tag: $CIRCLE_SHA1
+        target-tag: latest
+
+  # Rolls deployment out to kubernetes cluster.
+  deploy-to-kubernetes-cluster:
+    parameters:
+      deployment:
+        description: The Kubernetes deployment name to deploy to.
+        type: string
+
+      namespace:
+        description: The namespace the deployment resides in.
+        type: string
+        default: default
+
+    docker:
+      - image: google/cloud-sdk
+
+    steps:
+      - gcp-gke/install
+      - gcp-gke/update-kubeconfig-with-credentials:
+          gcloud-service-key: GCLOUD_SERVICE_KEY
+          google-project-id: GOOGLE_PROJECT_ID
+          cluster: $GOOGLE_CLUSTER_NAME
+          perform-login: true
+      - gcp-gke/rollout-image:
+          cluster: $GOOGLE_CLUSTER_NAME
+          namespace: <<parameters.namespace>>
+          deployment: <<parameters.deployment>>
+          container: payments-demo
+          image: gcr.io/${GOOGLE_PROJECT_ID}/rightfoot-payments-demo
+          tag: $CIRCLE_SHA1
+
+
+workflows:
+  version: 2
+
+  test_and_deploy:
+    jobs:
+    - environment
+    - lint:
+        requires:
+          - environment
+    - build:
+        requires:
+          - lint
+    - push-image:
+        requires:
+          - build
+    - deploy-to-kubernetes-cluster:
+        deployment: payments-demo
+        namespace: payments-demo
+        requires:
+          - push-image
+        filters:
+          branches:
+            only:
+              - master
