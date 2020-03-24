@@ -27,7 +27,8 @@ export class RightfootApiService {
   private static readonly ADD_PLAID_TOKEN_URL = `${environment.apiUrl}/beneficiaries/addPlaidToken`;
   private static readonly PAYMENTS_URL = `${environment.apiUrl}/payments`;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+              private storageService: StorageService) {
   }
 
   /**
@@ -44,7 +45,7 @@ export class RightfootApiService {
 
     return this.httpClient.post<BeneficiaryResponse>(RightfootApiService.CREATE_BENEFICIARY_URL, request).pipe(
       map(response => response.beneficiary),
-      tap(beneficiary => StorageService.storeUserId(beneficiary))
+      tap(beneficiary => this.storageService.storeUserId(beneficiary))
     );
   }
 
@@ -64,7 +65,7 @@ export class RightfootApiService {
 
     return this.httpClient.post<BeneficiaryResponse>(RightfootApiService.ADD_PLAID_TOKEN_URL, request).pipe(
       map(response => response.beneficiary),
-      tap(beneficiary => StorageService.storePaymentsEnabled(beneficiary.paymentsEnabled))
+      tap(beneficiary => this.storageService.storePaymentsEnabled(beneficiary.paymentsEnabled))
     );
   }
 
@@ -81,7 +82,7 @@ export class RightfootApiService {
 
     return this.httpClient.post<PaymentResponse>(RightfootApiService.PAYMENTS_URL, request).pipe(
       map(response => response.payment),
-      tap(payment => StorageService.storePaymentUuid(payment.uuid))
+      tap(payment => this.storageService.storePaymentUuid(payment.uuid))
     );
   }
 

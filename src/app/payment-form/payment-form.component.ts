@@ -22,7 +22,8 @@ import { Payment } from '../shared/payment.interface';
 })
 export class PaymentFormComponent implements OnInit {
   constructor(private apiService: RightfootApiService,
-              private plaidService: PlaidService) {
+              private plaidService: PlaidService,
+              private storageService: StorageService) {
   }
 
   /**
@@ -40,7 +41,7 @@ export class PaymentFormComponent implements OnInit {
   /**
    * Exposing this value to dynamically show/hide demographics related template.
    */
-  public isDemographicsInfoProvided = !!StorageService.getStoredUserId();
+  public isDemographicsInfoProvided = !!this.storageService.getStoredUserId();
 
   /** To show a loader. */
   public loading = false;
@@ -100,7 +101,7 @@ export class PaymentFormComponent implements OnInit {
         // Very basic error handling.
         this.loading = false;
         this.form.enable();
-        StorageService.clearAll();
+        this.storageService.clearAll();
         console.error(error);
         console.warn('Something went wrong and the application state is cleared. ' +
           'Please reload this page and try again.');
@@ -123,7 +124,7 @@ export class PaymentFormComponent implements OnInit {
       switchMap(paymentsEnabled => {
         if (paymentsEnabled) {
           return this.apiService.createPayment(
-            StorageService.getStoredUserId(),
+            this.storageService.getStoredUserId(),
             this.amount
           );
         }
@@ -138,7 +139,7 @@ export class PaymentFormComponent implements OnInit {
    * Returns cached user id if present or performs create beneficiary request otherwise.
    */
   private getUserIdStream(): Observable<string> {
-    const storedUserId = StorageService.getStoredUserId();
+    const storedUserId = this.storageService.getStoredUserId();
     if (!storedUserId) {
       return this.apiService.createBeneficiary(this.demographicsFormValue)
         .pipe(map(beneficiary => beneficiary.uuid));
@@ -150,7 +151,7 @@ export class PaymentFormComponent implements OnInit {
    * Returns cached plaid token if present or launches Plaid Link otherwise.
    */
   private getPlaidTokenStream(): Observable<string> {
-    const storedToken = StorageService.getStoredPlaidToken();
+    const storedToken = this.storageService.getStoredPlaidToken();
     if (!storedToken) {
       return this.plaidService.addPlaidLoan()
         .pipe(map(plaidResponse => plaidResponse.token));
@@ -164,7 +165,7 @@ export class PaymentFormComponent implements OnInit {
    * @param token Public token obtained from Plaid using Rightfoot's Plaid public key.
    */
   private getPaymentsEnabledStream(beneficiaryUuid: string, token: string): Observable<boolean> {
-    const storedPaymentsEnabled = StorageService.getStoredPaymentsEnabled();
+    const storedPaymentsEnabled = this.storageService.getStoredPaymentsEnabled();
     // If stored payments is null it means it wasn't set yet
     // so addPlaidToken request hasn't been performed yet.
     if (storedPaymentsEnabled === null) {
