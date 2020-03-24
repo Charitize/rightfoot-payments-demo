@@ -13,7 +13,7 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     req = req.clone({
       setHeaders: {
-        Authorization: environment.personalApiKey,
+        Authorization: `Bearer ${environment.personalApiKey}`,
         'Content-Type': 'application/json'
       }
     });
