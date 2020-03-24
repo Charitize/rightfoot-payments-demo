@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   gcp-gcr: circleci/gcp-gcr@0.6.1
+  gcp-gke: circleci/gcp-gke@1.0.3
 
 jobs:
   # Stands up environment, installing dependencies.
@@ -136,6 +137,36 @@ jobs:
         source-tag: $CIRCLE_SHA1
         target-tag: latest
 
+  # Rolls deployment out to kubernetes cluster.
+  deploy-to-kubernetes-cluster:
+    parameters:
+      deployment:
+        description: The Kubernetes deployment name to deploy to.
+        type: string
+
+      namespace:
+        description: The namespace the deployment resides in.
+        type: string
+        default: default
+
+    docker:
+      - image: google/cloud-sdk
+
+    steps:
+      - gcp-gke/install
+      - gcp-gke/update-kubeconfig-with-credentials:
+          gcloud-service-key: GCLOUD_SERVICE_KEY
+          google-project-id: GOOGLE_PROJECT_ID
+          cluster: $GOOGLE_CLUSTER_NAME
+          perform-login: true
+      - gcp-gke/rollout-image:
+          cluster: $GOOGLE_CLUSTER_NAME
+          namespace: <<parameters.namespace>>
+          deployment: <<parameters.deployment>>
+          container: payments-demo
+          image: gcr.io/${GOOGLE_PROJECT_ID}/rightfoot-payments-demo
+          tag: $CIRCLE_SHA1
+
 
 workflows:
   version: 2
@@ -152,3 +183,12 @@ workflows:
     - push-image:
         requires:
           - build
+    - deploy-to-kubernetes-cluster:
+        deployment: payments-demo
+        namespace: payments-demo
+        requires:
+          - push-image
+        filters:
+          branches:
+            only:
+              - master
