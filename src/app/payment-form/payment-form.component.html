@@ -1,5 +1,7 @@
 <mat-card class="form-card mat-typography">
   <mat-card-content class="form-card__content">
+    <app-flow-toggle></app-flow-toggle>
+
     <form (ngSubmit)="onSubmit()" [formGroup]="form">
       <!--   Form group for collecting demographics information.   -->
       <ng-container *ngIf="!isDemographicsInfoProvided">

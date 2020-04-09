@@ -21,6 +21,8 @@ import { PaymentSuccessComponent } from './payment-success/payment-success.compo
 import { SuccessCheckComponent } from './success-check/success-check.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { AuthInterceptor } from './auth.interceptor';
+import { FlowToggleComponent } from './flow-toggle/flow-toggle.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 /** Primary entry point for the entire application. */
 @NgModule({
@@ -31,6 +33,7 @@ import { AuthInterceptor } from './auth.interceptor';
     PayLoansComponent,
     PaymentSuccessComponent,
     SuccessCheckComponent,
+    FlowToggleComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,8 @@ import { AuthInterceptor } from './auth.interceptor';
     MatExpansionModule,
     ReactiveFormsModule,
     FormsModule,
-    NgxPlaidLinkModule
+    NgxPlaidLinkModule,
+    MatSlideToggleModule
   ],
   providers: [
     {
