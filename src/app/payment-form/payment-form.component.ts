@@ -23,6 +23,8 @@ import { Flow } from '../shared/flow.enum';
   styleUrls: [ './payment-form.component.scss' ]
 })
 export class PaymentFormComponent implements OnInit, OnDestroy {
+  private static readonly ssnControlName = 'socialSecurityNumber';
+
   constructor(private apiService: RightfootApiService,
               private plaidService: PlaidService,
               private storageService: StorageService,
@@ -58,8 +60,6 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
   );
 
   private componentDestroyed$ = new Subject<boolean>();
-
-  private static readonly ssnControlName = 'socialSecurityNumber';
 
   private static initializeDemographicsFormGroup(): FormGroup {
     return new FormGroup({
