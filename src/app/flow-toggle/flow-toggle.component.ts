@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { FlowService } from '../flow.service';
 import { map, take } from 'rxjs/operators';
 import { Flow } from '../shared/flow.enum';
@@ -16,9 +16,14 @@ import { Observable, Subscription } from 'rxjs';
 export class FlowToggleComponent implements OnDestroy {
   private subscription: Subscription;
 
+  /** Exposing this value for the mat-slide-toggle checked property. */
   public isChecked$: Observable<boolean> = this.flowService.activeFlow$.pipe(
     map(flow => flow === Flow.DYNAMIC)
   );
+
+  /** Disables underlying input. */
+  @Input()
+  public disabled = false;
 
   constructor(private flowService: FlowService) {
   }
