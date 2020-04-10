@@ -1,6 +1,7 @@
 <mat-slide-toggle
     (toggleChange)="toggleFlow()"
     [checked]="isChecked$ | async"
+    [disabled]="disabled"
     color="primary">
   Enable Dynamic Funding Sources
 </mat-slide-toggle>
