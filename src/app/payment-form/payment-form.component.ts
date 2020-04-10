@@ -183,7 +183,7 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
           return this.apiService.createFundingSource(
             this.storageService.getStoredUserId(),
             this.form.get(PaymentFormComponent.fundingSourceControlName).value
-          )
+          );
         }
         return of(null);
       }),
