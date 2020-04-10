@@ -1,5 +1,6 @@
 <mat-card class="form-card mat-typography">
   <mat-card-content class="form-card__content">
+    <app-flow-toggle [disabled]="loading"></app-flow-toggle>
 
     <form (ngSubmit)="onSubmit()" [formGroup]="form">
       <!--   Form group for collecting demographics information.   -->
@@ -107,6 +108,17 @@
           </ng-container>
         </ng-container>
       </ng-container>
+
+      <mat-form-field *ngIf="isDynamicFlowActive$ | async">
+        <mat-label>Social Security Number</mat-label>
+        <input
+            matInput
+            placeholder="Social Security Number"
+            formControlName="socialSecurityNumber"
+            type="number"
+            required
+        >
+      </mat-form-field>
 
       <h2 class="mat-title">
         Payment Amount

@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UnitedStatesTerritories } from '../shared/us-states-and-territories';
 import { phoneNumberValidator } from '../shared/phone-number.validator';
 import { RightfootApiService } from '../rightfoot-api.service';
 import { DemographicsFormValue } from '../shared/demographics-form-value.interface';
 import { StorageService } from '../storage.service';
-import { combineLatest, Observable, of, throwError } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import { combineLatest, Observable, of, Subject, throwError } from 'rxjs';
+import { map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { PlaidService } from '../plaid.service';
 import { Payment } from '../shared/payment.interface';
+import { FlowService } from '../flow.service';
+import { Flow } from '../shared/flow.enum';
 
 /**
  * This component provides a form with a payment amount input and a "Pay" button.
@@ -20,10 +22,11 @@ import { Payment } from '../shared/payment.interface';
   templateUrl: './payment-form.component.html',
   styleUrls: [ './payment-form.component.scss' ]
 })
-export class PaymentFormComponent implements OnInit {
+export class PaymentFormComponent implements OnInit, OnDestroy {
   constructor(private apiService: RightfootApiService,
               private plaidService: PlaidService,
-              private storageService: StorageService) {
+              private storageService: StorageService,
+              private flowService: FlowService) {
   }
 
   /**
@@ -45,6 +48,18 @@ export class PaymentFormComponent implements OnInit {
 
   /** To show a loader. */
   public loading = false;
+
+  /**
+   * Exposing this value fot the template for conditional
+   * rendering of this flow's specific controls.
+   */
+  public isDynamicFlowActive$ = this.flowService.activeFlow$.pipe(
+    map(flow => flow === Flow.DYNAMIC)
+  );
+
+  private componentDestroyed$ = new Subject<boolean>();
+
+  private static readonly ssnControlName = 'socialSecurityNumber';
 
   private static initializeDemographicsFormGroup(): FormGroup {
     return new FormGroup({
@@ -79,7 +94,42 @@ export class PaymentFormComponent implements OnInit {
         'demographics',
         PaymentFormComponent.initializeDemographicsFormGroup()
       );
+      this.subscribeToActiveFlow();
     }
+  }
+
+  ngOnDestroy() {
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
+  }
+
+  private subscribeToActiveFlow() {
+    this.flowService.activeFlow$
+      .pipe(takeUntil(this.componentDestroyed$))
+      .subscribe(flow => {
+        const formContainsSsn = this.form.contains(PaymentFormComponent.ssnControlName);
+        if (Flow.MONOLITHIC === flow && formContainsSsn) {
+          this.removeSsnFromFormGroup();
+        } else if (Flow.DYNAMIC === flow && !formContainsSsn) {
+          this.addSsnToFormGroup();
+        }
+      });
+  }
+
+  private removeSsnFromFormGroup() {
+    this.form.removeControl(PaymentFormComponent.ssnControlName);
+  }
+
+  private addSsnToFormGroup() {
+    this.form.addControl(
+      PaymentFormComponent.ssnControlName,
+      new FormControl(null, [
+        Validators.required,
+        Validators.pattern(
+          /^(?!000|666)[0-8][0-9]{2}(?!00)[0-9]{2}(?!0000)[0-9]{4}$/
+        )
+      ])
+    );
   }
 
   /**
@@ -142,7 +192,19 @@ export class PaymentFormComponent implements OnInit {
     const storedUserId = this.storageService.getStoredUserId();
     if (!storedUserId) {
       return this.apiService.createBeneficiary(this.demographicsFormValue)
-        .pipe(map(beneficiary => beneficiary.uuid));
+        .pipe(
+          switchMap(beneficiary => {
+            // Verify beneficiary if current flow is dynamic funding sources.
+            if (this.form.contains(PaymentFormComponent.ssnControlName)) {
+              return this.apiService.verifyBeneficiary(
+                beneficiary.uuid,
+                this.form.get(PaymentFormComponent.ssnControlName).value
+              );
+            }
+            return of(beneficiary);
+          }),
+          map(beneficiary => beneficiary.uuid)
+        );
     }
     return of(storedUserId);
   }
