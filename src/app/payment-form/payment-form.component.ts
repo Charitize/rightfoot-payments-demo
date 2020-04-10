@@ -109,6 +109,10 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
     return this.form.get('fundingSource').valid;
   }
 
+  /**
+   * Opens Plaid Link and stores Plaid token in the form value
+   * to attach it to the beneficiary on submit.
+   */
   public linkFundingSource() {
     this.plaidService.getFundingSource().subscribe(response => {
       this.form
