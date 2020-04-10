@@ -60,11 +60,6 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
     map(flow => flow === Flow.DYNAMIC)
   );
 
-  /** Exposing this value to conditionally disable funding source button. */
-  public isFundingSourceLinked() {
-    return this.form.get('fundingSource').valid;
-  }
-
   private componentDestroyed$ = new Subject<boolean>();
 
   private static initializeDemographicsFormGroup(): FormGroup {
@@ -109,46 +104,9 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
     this.componentDestroyed$.complete();
   }
 
-  private subscribeToActiveFlow() {
-    this.flowService.activeFlow$
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe(flow => {
-        const formContainsSsn = this.form.contains(PaymentFormComponent.ssnControlName);
-        if (Flow.MONOLITHIC === flow && formContainsSsn) {
-          this.removeSsnFromFormGroup();
-          this.removeFundingSourceFromFormGroup();
-        } else if (Flow.DYNAMIC === flow && !formContainsSsn) {
-          this.addSsnToFormGroup();
-          this.addFundingSourceToFormGroup();
-        }
-      });
-  }
-
-  private removeSsnFromFormGroup() {
-    this.form.removeControl(PaymentFormComponent.ssnControlName);
-  }
-
-  private addSsnToFormGroup() {
-    this.form.addControl(
-      PaymentFormComponent.ssnControlName,
-      new FormControl(null, [
-        Validators.required,
-        Validators.pattern(
-          /^(?!000|666)[0-8][0-9]{2}(?!00)[0-9]{2}(?!0000)[0-9]{4}$/
-        )
-      ])
-    );
-  }
-
-  private removeFundingSourceFromFormGroup() {
-    this.form.removeControl(PaymentFormComponent.fundingSourceControlName);
-  }
-
-  private addFundingSourceToFormGroup() {
-    this.form.addControl(
-      PaymentFormComponent.fundingSourceControlName,
-      new FormControl(null, Validators.required)
-    );
+  /** Exposing this value to conditionally disable funding source button. */
+  public isFundingSourceLinked() {
+    return this.form.get('fundingSource').valid;
   }
 
   public linkFundingSource() {
@@ -294,5 +252,47 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
       return null;
     }
     return parseFloat(value);
+  }
+
+  private subscribeToActiveFlow() {
+    this.flowService.activeFlow$
+      .pipe(takeUntil(this.componentDestroyed$))
+      .subscribe(flow => {
+        const formContainsSsn = this.form.contains(PaymentFormComponent.ssnControlName);
+        if (Flow.MONOLITHIC === flow && formContainsSsn) {
+          this.removeSsnFromFormGroup();
+          this.removeFundingSourceFromFormGroup();
+        } else if (Flow.DYNAMIC === flow && !formContainsSsn) {
+          this.addSsnToFormGroup();
+          this.addFundingSourceToFormGroup();
+        }
+      });
+  }
+
+  private removeSsnFromFormGroup() {
+    this.form.removeControl(PaymentFormComponent.ssnControlName);
+  }
+
+  private addSsnToFormGroup() {
+    this.form.addControl(
+      PaymentFormComponent.ssnControlName,
+      new FormControl(null, [
+        Validators.required,
+        Validators.pattern(
+          /^(?!000|666)[0-8][0-9]{2}(?!00)[0-9]{2}(?!0000)[0-9]{4}$/
+        )
+      ])
+    );
+  }
+
+  private removeFundingSourceFromFormGroup() {
+    this.form.removeControl(PaymentFormComponent.fundingSourceControlName);
+  }
+
+  private addFundingSourceToFormGroup() {
+    this.form.addControl(
+      PaymentFormComponent.fundingSourceControlName,
+      new FormControl(null, Validators.required)
+    );
   }
 }
