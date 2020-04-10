@@ -4,6 +4,14 @@
   margin: 30px auto;
   padding: 30px 0;
 
+  mat-form-field {
+    width: calc(50% - 10px);
+
+    &:nth-child(odd) {
+      margin-right: 20px;
+    }
+  }
+
   // Remove card styling for smaller displays.
   @media screen and (max-width: 620px) {
     box-shadow: none;
@@ -20,15 +28,8 @@
     justify-content: center;
     align-items: center;
     form {
-      display: flex;
-      flex-direction: column;
       width: 100%;
       max-width: 400px;
-    }
-    .form-group-container {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
     }
     .mat-caption {
       text-align: center;

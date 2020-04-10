@@ -1,6 +1,5 @@
 <mat-card class="form-card mat-typography">
   <mat-card-content class="form-card__content">
-    <app-flow-toggle></app-flow-toggle>
 
     <form (ngSubmit)="onSubmit()" [formGroup]="form">
       <!--   Form group for collecting demographics information.   -->
@@ -11,7 +10,7 @@
         <h3 class="mat-subtitle">
           A few things about the person benefiting from this payment
         </h3>
-        <div formGroupName="demographics" class="form-group-container">
+        <ng-container formGroupName="demographics">
           <mat-form-field>
             <mat-label>First Name</mat-label>
             <input
@@ -51,7 +50,7 @@
             <mat-datepicker #datepicker startView="multi-year"></mat-datepicker>
           </mat-form-field>
 
-          <div formGroupName="mailingAddress" class="form-group-container">
+          <ng-container formGroupName="mailingAddress">
             <mat-form-field>
               <mat-label>Street Address</mat-label>
               <input
@@ -105,8 +104,8 @@
                   required
               >
             </mat-form-field>
-          </div>
-        </div>
+          </ng-container>
+        </ng-container>
       </ng-container>
 
       <h2 class="mat-title">
