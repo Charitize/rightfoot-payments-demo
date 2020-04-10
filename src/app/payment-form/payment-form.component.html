@@ -109,16 +109,33 @@
         </ng-container>
       </ng-container>
 
-      <mat-form-field *ngIf="isDynamicFlowActive$ | async">
-        <mat-label>Social Security Number</mat-label>
-        <input
-            matInput
-            placeholder="Social Security Number"
-            formControlName="socialSecurityNumber"
-            type="number"
-            required
-        >
-      </mat-form-field>
+      <ng-container *ngIf="isDynamicFlowActive$ | async">
+        <mat-form-field>
+          <mat-label>Social Security Number</mat-label>
+          <input
+              matInput
+              placeholder="Social Security Number"
+              formControlName="socialSecurityNumber"
+              type="number"
+              required
+          >
+        </mat-form-field>
+
+        <button
+            #linkButton
+            mat-flat-button
+            type="button"
+            [disabled]="isFundingSourceLinked()"
+            (click)="linkFundingSource()"
+            color="primary">
+          <span *ngIf="!linkButton.disabled; else linked">
+            Link Funding Source
+          </span>
+          <ng-template #linked>
+            Funding Source Linked
+          </ng-template>
+        </button>
+      </ng-container>
 
       <h2 class="mat-title">
         Payment Amount

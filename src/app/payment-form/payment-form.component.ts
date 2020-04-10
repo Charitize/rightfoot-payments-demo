@@ -24,6 +24,7 @@ import { Flow } from '../shared/flow.enum';
 })
 export class PaymentFormComponent implements OnInit, OnDestroy {
   private static readonly ssnControlName = 'socialSecurityNumber';
+  private static readonly fundingSourceControlName = 'fundingSource';
 
   constructor(private apiService: RightfootApiService,
               private plaidService: PlaidService,
@@ -58,6 +59,11 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
   public isDynamicFlowActive$ = this.flowService.activeFlow$.pipe(
     map(flow => flow === Flow.DYNAMIC)
   );
+
+  /** Exposing this value to conditionally disable funding source button. */
+  public isFundingSourceLinked() {
+    return this.form.get('fundingSource').valid;
+  }
 
   private componentDestroyed$ = new Subject<boolean>();
 
@@ -110,8 +116,10 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
         const formContainsSsn = this.form.contains(PaymentFormComponent.ssnControlName);
         if (Flow.MONOLITHIC === flow && formContainsSsn) {
           this.removeSsnFromFormGroup();
+          this.removeFundingSourceFromFormGroup();
         } else if (Flow.DYNAMIC === flow && !formContainsSsn) {
           this.addSsnToFormGroup();
+          this.addFundingSourceToFormGroup();
         }
       });
   }
@@ -130,6 +138,25 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
         )
       ])
     );
+  }
+
+  private removeFundingSourceFromFormGroup() {
+    this.form.removeControl(PaymentFormComponent.fundingSourceControlName);
+  }
+
+  private addFundingSourceToFormGroup() {
+    this.form.addControl(
+      PaymentFormComponent.fundingSourceControlName,
+      new FormControl(null, Validators.required)
+    );
+  }
+
+  public linkFundingSource() {
+    this.plaidService.getFundingSource().subscribe(response => {
+      this.form
+        .get(PaymentFormComponent.fundingSourceControlName)
+        .setValue(response.token);
+    });
   }
 
   /**
@@ -163,16 +190,44 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
    * to create a payment.
    */
   private createPayment(): Observable<Payment> {
+    let isDynamicFlowActive = false;
     return combineLatest([
+      // Create user or retrieve existing id.
       this.getUserIdStream(),
-      this.getPlaidTokenStream()
+      // Launch plaid link for loans.
+      this.getPlaidTokenStream(),
+      // Retrieve if flow is dynamic to store it once.
+      this.isDynamicFlowActive$
     ]).pipe(
       take(1),
-      switchMap(([uuid, plaidToken]) => {
+      // Sets flow value and attaches plaid token to the beneficiary if it is not attached yet.
+      switchMap(([uuid, plaidToken, isFlowDynamic]) => {
+        isDynamicFlowActive = isFlowDynamic;
         return this.getPaymentsEnabledStream(uuid, plaidToken);
       }),
-      switchMap(paymentsEnabled => {
-        if (paymentsEnabled) {
+      // Verify beneficiary if current flow is dynamic.
+      switchMap(() => {
+        if (isDynamicFlowActive) {
+          return this.apiService.verifyBeneficiary(
+            this.storageService.getStoredUserId(),
+            this.form.get(PaymentFormComponent.ssnControlName).value
+          );
+        }
+        return of(null);
+      }),
+      // Attach funding source to the beneficiary if flow is dynamic.
+      switchMap(() => {
+        if (isDynamicFlowActive) {
+          return this.apiService.createFundingSource(
+            this.storageService.getStoredUserId(),
+            this.form.get(PaymentFormComponent.fundingSourceControlName).value
+          )
+        }
+        return of(null);
+      }),
+      // At last, if payments are enabled by backend, create one.
+      switchMap(() => {
+        if (this.storageService.getStoredPaymentsEnabled()) {
           return this.apiService.createPayment(
             this.storageService.getStoredUserId(),
             this.amount
@@ -181,7 +236,8 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
         return throwError(
             'Payments are not enabled. ' +
             'Something went wrong with linking the user with the plaid token.');
-      })
+      }),
+      takeUntil(this.componentDestroyed$)
     );
   }
 
@@ -192,19 +248,7 @@ export class PaymentFormComponent implements OnInit, OnDestroy {
     const storedUserId = this.storageService.getStoredUserId();
     if (!storedUserId) {
       return this.apiService.createBeneficiary(this.demographicsFormValue)
-        .pipe(
-          switchMap(beneficiary => {
-            // Verify beneficiary if current flow is dynamic funding sources.
-            if (this.form.contains(PaymentFormComponent.ssnControlName)) {
-              return this.apiService.verifyBeneficiary(
-                beneficiary.uuid,
-                this.form.get(PaymentFormComponent.ssnControlName).value
-              );
-            }
-            return of(beneficiary);
-          }),
-          map(beneficiary => beneficiary.uuid)
-        );
+        .pipe(map(beneficiary => beneficiary.uuid));
     }
     return of(storedUserId);
   }

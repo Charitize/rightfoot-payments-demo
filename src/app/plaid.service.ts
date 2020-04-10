@@ -43,7 +43,14 @@ export class PlaidService {
     }
   };
 
-  private handlePlaidLoan(config: PlaidConfigWithoutListeners): Observable<PlaidOnSuccessArgs> {
+  private authConfig: PlaidConfigWithoutListeners = {
+    clientName: 'Rightfoot',
+    env: environment.plaid.environment,
+    key: environment.plaid.publicKey,
+    product: ['auth']
+  };
+
+  private handlePlaidLink(config: PlaidConfigWithoutListeners): Observable<PlaidOnSuccessArgs> {
     return new Observable<PlaidOnSuccessArgs>(
       (observer: Subscriber<PlaidOnSuccessArgs>) => {
         this.plaidLinkService.createPlaid({
@@ -64,11 +71,15 @@ export class PlaidService {
    * Launches Plaid Link.
    */
   public addPlaidLoan(): Observable<PlaidOnSuccessArgs> {
-    return this.handlePlaidLoan(this.config).pipe(
+    return this.handlePlaidLink(this.config).pipe(
       map(plaidLinkResponse => {
         this.storageService.storePlaidToken(plaidLinkResponse.token);
         return plaidLinkResponse;
       })
     );
+  }
+
+  public getFundingSource(): Observable<PlaidOnSuccessArgs> {
+    return this.handlePlaidLink(this.authConfig);
   }
 }
