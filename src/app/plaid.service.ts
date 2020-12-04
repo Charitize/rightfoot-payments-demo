@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NgxPlaidLinkService } from 'ngx-plaid-link';
-import { PlaidConfig, PlaidOnSuccessArgs, PlaidSuccessMetadata } from 'ngx-plaid-link/lib/interfaces';
+import { NgxPlaidLinkService, PlaidConfig, PlaidOnSuccessArgs, PlaidSuccessMetadata } from 'ngx-plaid-link';
 import { PlaidLinkHandler } from 'ngx-plaid-link/lib/ngx-plaid-link-handler';
 import { Observable, Subscriber } from 'rxjs';
 import { map } from 'rxjs/operators';
