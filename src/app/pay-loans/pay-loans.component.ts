@@ -16,7 +16,7 @@ export class PayLoansComponent {
   }
 
   /**
-   * When true, shows PaymentSuccessComponent, otherwise PaymentFormComponent is rendered.
+   * When true, shows PaymentStatusComponent, otherwise PaymentFormComponent is rendered.
    * @link PaymentSuccessComponent
    * @link PaymentFormComponent
    */

@@ -1,5 +1,38 @@
 :host {
-  display: block;
-  // Adjustment for the header.
-  padding-top: 64px;
+
+  padding: 45px;
+
+  .logo-title {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100px;
+    height: auto;
+    vertical-align: center;
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+
+  .form-card {
+    z-index: 2;
+    border-radius: 16px;
+    //width: 100%;
+    max-width: 55%;
+    padding: 40px;
+    margin: auto;
+
+    & .form-card {
+      // Remove card styling for smaller displays.
+      @media screen and (max-width: 620px) {
+        box-shadow: none;
+        margin-top: 15px;
+        background-color: transparent;
+        padding: 0 0 30px;
+
+        mat-form-field {
+          width: 100%;
+        }
+      }
+    }
+  }
 }

@@ -9,8 +9,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PaymentFormComponent } from './payment-form/payment-form.component';
 import { PayLoansComponent } from './pay-loans/pay-loans.component';
+import { PaymentFormComponent } from './payment-form/payment-form.component';
+import { PaymentStatusComponent } from './payment-status/payment-status.component';
+import { StepperComponent } from './stepper/stepper.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -21,6 +23,7 @@ import { PaymentSuccessComponent } from './payment-success/payment-success.compo
 import { SuccessCheckComponent } from './success-check/success-check.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { AuthInterceptor } from './auth.interceptor';
+import { MatIconModule } from '@angular/material/icon';
 
 /** Primary entry point for the entire application. */
 @NgModule({
@@ -30,6 +33,8 @@ import { AuthInterceptor } from './auth.interceptor';
     PaymentFormComponent,
     PayLoansComponent,
     PaymentSuccessComponent,
+    PaymentStatusComponent,
+    StepperComponent,
     SuccessCheckComponent,
   ],
   imports: [
@@ -47,7 +52,8 @@ import { AuthInterceptor } from './auth.interceptor';
     MatExpansionModule,
     ReactiveFormsModule,
     FormsModule,
-    NgxPlaidLinkModule
+    NgxPlaidLinkModule,
+    MatIconModule
   ],
   providers: [
     {

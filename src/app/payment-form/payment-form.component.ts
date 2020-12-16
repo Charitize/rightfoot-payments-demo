@@ -26,6 +26,21 @@ export class PaymentFormComponent implements OnInit {
               private storageService: StorageService) {
   }
 
+  private get demographicsFormValue(): DemographicsFormValue {
+    return this.form.get('demographics').value as DemographicsFormValue;
+  }
+
+  /**
+   * Returns amount value as a float.
+   */
+  private get amount(): number {
+    const value = this.form.get('amount').value;
+    if (value === undefined) {
+      return null;
+    }
+    return parseFloat(value);
+  }
+
   /**
    * Form definition with validators.
    */
@@ -102,9 +117,15 @@ export class PaymentFormComponent implements OnInit {
         this.loading = false;
         this.form.enable();
         this.storageService.clearAll();
+        this.storageService.storeCurrentStep(1);
         console.error(error);
         console.warn('Something went wrong and the application state is cleared. ' +
           'Please reload this page and try again.');
+      }, () => {
+        // If user close plaid view we should show enabled previous form
+        this.loading = false;
+        this.form.enable();
+        this.storageService.storeCurrentStep(1);
       });
   }
 
@@ -119,9 +140,11 @@ export class PaymentFormComponent implements OnInit {
     ]).pipe(
       take(1),
       switchMap(([uuid, plaidToken]) => {
+        this.storageService.storeCurrentStep(2);
         return this.getPaymentsEnabledStream(uuid, plaidToken);
       }),
       switchMap(paymentsEnabled => {
+        this.storageService.storeCurrentStep(3);
         if (paymentsEnabled) {
           return this.apiService.createPayment(
             this.storageService.getStoredUserId(),
@@ -175,18 +198,20 @@ export class PaymentFormComponent implements OnInit {
     return of(storedPaymentsEnabled);
   }
 
-  private get demographicsFormValue(): DemographicsFormValue {
-    return this.form.get('demographics').value as DemographicsFormValue;
-  }
+  fillExampleData() {
+    const demographics = this.form.controls.demographics as FormGroup;
 
-  /**
-   * Returns amount value as a float.
-   */
-  private get amount(): number {
-    const value = this.form.get('amount').value;
-    if (value === undefined) {
-      return null;
-    }
-    return parseFloat(value);
+    demographics.controls.firstName.setValue('John');
+    demographics.controls.lastName.setValue('Doe');
+    demographics.controls.phoneNumber.setValue('+1234567890');
+    demographics.controls.dateOfBirth.setValue(new Date('12/1/1980'));
+
+    const mailing = demographics.controls.mailingAddress as FormGroup;
+    mailing.controls.line1.setValue('1600 Pennsylvania Avenue');
+    mailing.controls.city.setValue('Washington');
+    mailing.controls.state.setValue('DC');
+    mailing.controls.zipCode.setValue('20001');
+
+    this.form.controls.amount.setValue(100);
   }
 }

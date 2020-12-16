@@ -1,6 +1,6 @@
-import { Beneficiary } from './shared/beneficiary.interface';
-import { BehaviorSubject } from 'rxjs';
-import { Injectable } from '@angular/core';
+import {Beneficiary} from './shared/beneficiary.interface';
+import {BehaviorSubject} from 'rxjs';
+import {Injectable} from '@angular/core';
 
 /**
  * This static service is used to store required data for requests.
@@ -15,6 +15,8 @@ export class StorageService {
   private static readonly PLAID_TOKEN_KEY = 'pl_t';
   private static readonly PAYMENTS_ENABLED_KEY = 'p_e';
   private static readonly PAYMENT_UUID_KEY = 'p_u';
+  private static readonly PAYMENT_RESPONSE = 'p_resp';
+  private static readonly CURRENT_STEP = 'current_step';
 
   private static readonly storage = window.sessionStorage;
 
@@ -25,6 +27,14 @@ export class StorageService {
    * Returns stream with a currently stored payment uuid.
    */
   public storedPaymentUuid$ = this.storedPaymentUuidSubject.asObservable();
+
+  private storedCurrentStepSubject: BehaviorSubject<number> =
+    new BehaviorSubject<number>(this.getStoreCurrentStep());
+
+  /**
+   * Returns stream with a currently stored current step.
+   */
+  public storedCurrentStep$ = this.storedCurrentStepSubject.asObservable();
 
   /**
    * Returns cached user id.
@@ -96,5 +106,34 @@ export class StorageService {
    */
   public clearAll(): void {
     StorageService.storage.clear();
+  }
+
+  /**
+   * Store full response from Plaid
+   */
+  public storeResponse(response: string): void {
+    StorageService.storage.setItem(StorageService.PAYMENT_RESPONSE, response);
+  }
+
+  /**
+   * Returns stored response
+   */
+  public getStoredPlaidResponse(): string {
+    return StorageService.storage.getItem(StorageService.PAYMENT_RESPONSE);
+  }
+
+  /**
+   * Store current step
+   */
+  public storeCurrentStep(currentStep: number): void {
+    this.storedCurrentStepSubject.next(currentStep);
+    StorageService.storage.setItem(StorageService.CURRENT_STEP, String(currentStep));
+  }
+
+  /**
+   * Returns stored current step
+   */
+  public getStoreCurrentStep(): number {
+    return Number(StorageService.storage.getItem(StorageService.CURRENT_STEP));
   }
 }

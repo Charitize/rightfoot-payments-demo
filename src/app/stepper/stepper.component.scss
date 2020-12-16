@@ -1,0 +1,93 @@
+.stepper-container {
+  width: 100%;
+  margin-top: 40px;
+  margin-bottom: 40px;
+
+  .stepper-line {
+    display: flex;
+    justify-content: space-between;
+
+    mat-label {
+      box-sizing: border-box;
+      display: flex;
+      font-family: Inter, sans-serif;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 17px;
+      text-align: center;
+      padding-top: 13px;
+      padding-left: 18px;
+    }
+
+    mat-label, mat-icon, div {
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+    }
+
+    mat-icon {
+      display: flex;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    span {
+      height: 4px;
+      width: 100%;
+      margin: 22px 32px 32px;
+
+      &.done {
+        background-color: #1A764F;
+      }
+
+      &.active, &.pending {
+        background-color: #E6E8EA;
+      }
+    }
+
+    .active {
+      mat-label {
+        background-color: white;
+        box-shadow: 0 14px 24px rgba(24, 14, 88, 0.15);
+      }
+    }
+
+    .pending {
+      mat-label {
+        background-color: #E0DBF9;
+        color: #6155AF;
+      }
+    }
+
+    .done {
+      mat-icon {
+        background-color: #D4F0E4;
+        color: #1A764F;
+      }
+    }
+  }
+
+  .stepper-title {
+    display: flex;
+    justify-content: space-between;
+
+    mat-label {
+      width: 150px;
+      height: 17px;
+      font-family: Inter, sans-serif;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 17px;
+    }
+
+    .active, .pending {
+      color: #59537B;
+    }
+
+    .done {
+      color: #DEDDE5;
+    }
+  }
+}

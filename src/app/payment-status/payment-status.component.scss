@@ -1,0 +1,28 @@
+.status-form {
+  display: grid;
+
+  button {
+    width: 138px;
+    font-size: 16px;
+    margin: 56px auto;
+  }
+
+  .status-title {
+    width: 100%;
+    color: #0D0C12;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 23px;
+  }
+
+  pre {
+    background-color: #222226;
+    border-radius: 16px;
+    padding: 32px 24px 28px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    font-family: IBM Plex Mono, sans-serif;
+    color: #9DA1AA;
+  }
+}
