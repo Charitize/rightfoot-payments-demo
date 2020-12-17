@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import { StorageService } from '../storage.service';
+import {Subscription} from 'rxjs';
 
 enum StepStatusStyle {
   ACTIVE = 'active',
@@ -12,7 +13,9 @@ enum StepStatusStyle {
   templateUrl: './stepper.component.html',
   styleUrls: ['./stepper.component.scss']
 })
-export class StepperComponent {
+export class StepperComponent implements OnDestroy {
+  private readonly subscription: Subscription;
+
   stepOneStyle = StepStatusStyle.ACTIVE;
   stepTwoStyle = StepStatusStyle.PENDING;
   stepThreeStyle = StepStatusStyle.PENDING;
@@ -26,7 +29,7 @@ export class StepperComponent {
 
   constructor(private storageService: StorageService) {
     storageService.storeCurrentStep(1);
-    storageService.storedCurrentStep$.subscribe(currentStep => {
+    this.subscription = storageService.storedCurrentStep$.subscribe(currentStep => {
       this.handleStyle(currentStep);
     });
   }
@@ -51,5 +54,11 @@ export class StepperComponent {
     this.stepOneDone = currentStep > 1;
     this.stepTwoDone = currentStep > 2;
     this.stepThreeDone = currentStep > 3;
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }
