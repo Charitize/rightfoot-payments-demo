@@ -19,19 +19,17 @@
     height: 48px;
     border-radius: 50%;
     background-color: #E0DBF9;
+    transform: translateY(-17px);
 
     .mat-select-arrow {
       margin: 0 19px;
     }
   }
 
-  .mat-form-field-type-mat-input .mat-form-field-infix {
+  .mat-form-field-type-mat-input .mat-form-field-infix,
+  .mat-form-field-type-mat-select .mat-form-field-infix {
     border: 0;
     margin-top: 17px;
-  }
-
-  .mat-form-field-type-mat-select .mat-form-field-infix {
-    border-top: 0;
   }
 }
 
