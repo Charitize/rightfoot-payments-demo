@@ -99,6 +99,18 @@
       }
     }
 
+    mat-label:nth-child(1) {
+      text-align: left;
+    }
+
+    mat-label:nth-child(2) {
+      text-align: center;
+    }
+
+    mat-label:nth-child(3) {
+      text-align: right;
+    }
+
     .active,
     .pending {
       color: #59537b;

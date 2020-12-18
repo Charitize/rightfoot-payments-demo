@@ -130,6 +130,10 @@
       margin: 56px auto 0;
       border-radius: $height / 2;
 
+      &:not([disabled]) {
+        background-color: #624de3;
+      }
+
       mat-icon {
         margin-left: 45px;
         margin-top: -5px;
