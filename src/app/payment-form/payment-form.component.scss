@@ -3,6 +3,24 @@
     display: none;
   }
 
+  .mat-form-field-label {
+    font-family: Inter, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 17px;
+    color: #9da1aa;
+  }
+
+  .mat-focused .mat-form-field-label {
+    font-family: Inter, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    color: #a09cb5;
+  }
+
   .mat-form-field-wrapper {
     padding: 1px 8px 8px 24px;
   }
@@ -11,15 +29,15 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background-color: #E0DBF9;
+    background-color: #e0dbf9;
   }
 
   .mat-select-arrow-wrapper {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background-color: #E0DBF9;
-    transform: translateY(-17px);
+    background-color: #e0dbf9;
+    transform: translateY(-15px);
 
     .mat-select-arrow {
       margin: 0 19px;
@@ -29,7 +47,7 @@
   .mat-form-field-type-mat-input .mat-form-field-infix,
   .mat-form-field-type-mat-select .mat-form-field-infix {
     border: 0;
-    margin-top: 17px;
+    margin-top: 14px;
   }
 }
 
@@ -40,29 +58,45 @@
       flex-direction: column;
       width: 100%;
 
-      .mat-subtitle {
-        font-size: 14px;
-        margin-right: 0;
-        margin-left: 0;
-        margin-bottom: 0;
-        color: #59537B;
+      .form-group-container {
+        width: 100%;
       }
 
       .mat-subtitle {
-        margin-top: 5px;
+        margin: 5px 0 0;
+        color: #59537b;
+        font-family: Lexend Deca, sans-serif;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: normal;
+        line-height: 21px;
+      }
+
+      .mat-form-field {
+        font-family: Inter, sans-serif;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 17px;
+        color: #59537b;
       }
     }
 
-    .mat-form-field-type-mat-input, .mat-form-field-type-mat-select {
+    .mat-form-field-type-mat-input,
+    .mat-form-field-type-mat-select {
       width: 48%;
       height: 64px;
-      border: 1px solid #E6E8EA;
+      border: 1px solid #e6e8ea;
       box-sizing: border-box;
       border-radius: 100px;
       margin-top: 32px;
 
       div.mat-form-field-wrapper {
         padding: 10px;
+      }
+
+      @media screen and (max-width: 600px) {
+        width: 100%;
       }
     }
 
@@ -83,18 +117,18 @@
     }
 
     .mat-title {
-      margin: 0.5em 0;
+      margin-top: 48px;
     }
 
-    button[type=submit] {
+    button[type="submit"] {
       $height: 56px;
-      height: $height;
-      width: 220px;
       display: flex;
       justify-content: center;
-      border-radius: $height / 2;
+      width: 220px;
+      height: $height;
       padding: 9px;
       margin: 56px auto 0;
+      border-radius: $height / 2;
 
       mat-icon {
         margin-left: 45px;
@@ -107,14 +141,16 @@
       padding: 10px 16px;
       width: 202px;
       height: 40px;
-      background: #624DE3;
+      background: #624de3;
       border-radius: 8px;
       color: white;
       text-align: center;
+      font-family: Inter, sans-serif;
       font-weight: bold;
       font-size: 16px;
       line-height: 20px;
       margin-left: auto;
+      margin-top: 24px;
     }
   }
 }

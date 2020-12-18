@@ -1,29 +1,30 @@
 .stepper-container {
   width: 100%;
   margin-top: 40px;
-  margin-bottom: 40px;
+  margin-bottom: 8px;
 
   .stepper-line {
     display: flex;
     justify-content: space-between;
 
     mat-label {
-      box-sizing: border-box;
       display: flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
       font-family: Inter, sans-serif;
+      font-size: 14px;
       font-style: normal;
       font-weight: bold;
-      font-size: 14px;
       line-height: 17px;
-      text-align: center;
-      padding-top: 13px;
-      padding-left: 18px;
     }
 
-    mat-label, mat-icon, div {
-      border-radius: 50%;
+    mat-label,
+    mat-icon,
+    div {
       width: 45px;
       height: 45px;
+      border-radius: 50%;
     }
 
     mat-icon {
@@ -33,37 +34,46 @@
     }
 
     span {
-      height: 4px;
       width: 100%;
-      margin: 22px 32px 32px;
+      height: 4px;
+      margin-top: 22px;
+      margin-right: 32px;
+      margin-left: 32px;
 
       &.done {
-        background-color: #1A764F;
+        background-color: #1a764f;
       }
 
-      &.active, &.pending {
-        background-color: #E6E8EA;
+      &.active,
+      &.pending {
+        background-color: #e6e8ea;
+      }
+
+      @media screen and (max-width: 600px) {
+        margin-top: 22px;
+        margin-right: 8px;
+        margin-left: 8px;
       }
     }
 
     .active {
       mat-label {
-        background-color: white;
         box-shadow: 0 14px 24px rgba(24, 14, 88, 0.15);
+        background-color: white;
       }
     }
 
     .pending {
       mat-label {
-        background-color: #E0DBF9;
-        color: #6155AF;
+        background-color: #e0dbf9;
+        color: #6155af;
       }
     }
 
     .done {
       mat-icon {
-        background-color: #D4F0E4;
-        color: #1A764F;
+        background-color: #d4f0e4;
+        color: #1a764f;
       }
     }
   }
@@ -76,19 +86,26 @@
       width: 150px;
       height: 17px;
       font-family: Inter, sans-serif;
+      font-size: 14px;
       font-style: normal;
       font-weight: bold;
-      font-size: 14px;
       line-height: 17px;
-      text-align: center;
+      margin-top: 16px;
+
+      &:nth-child(even) {
+        text-align: center;
+        margin-left: 8px;
+        margin-right: 8px;
+      }
     }
 
-    .active, .pending {
-      color: #59537B;
+    .active,
+    .pending {
+      color: #59537b;
     }
 
     .done {
-      color: #DEDDE5;
+      color: #dedde5;
     }
   }
 }

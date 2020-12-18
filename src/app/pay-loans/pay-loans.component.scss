@@ -1,5 +1,4 @@
 :host {
-
   padding: 45px;
 
   .logo-title {
@@ -16,7 +15,6 @@
   .form-card {
     z-index: 2;
     border-radius: 16px;
-    //width: 100%;
     max-width: 55%;
     padding: 40px;
     margin: auto;
@@ -31,6 +29,11 @@
 
         mat-form-field {
           width: 100%;
+          font-family: Inter, sans-serif;
+          font-style: normal;
+          font-weight: bold;
+          font-size: 14px;
+          line-height: 17px;
         }
       }
     }

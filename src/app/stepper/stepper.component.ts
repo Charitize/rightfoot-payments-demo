@@ -1,17 +1,21 @@
-import {Component, OnDestroy} from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { StorageService } from '../storage.service';
-import {Subscription} from 'rxjs';
+import { Subscription } from 'rxjs';
 
 enum StepStatusStyle {
   ACTIVE = 'active',
   PENDING = 'pending',
-  DONE = 'done'
+  DONE = 'done',
 }
 
+/**
+ * This component provides a styled stepper for the application.
+ * Showing current step.
+ */
 @Component({
   selector: 'app-stepper',
   templateUrl: './stepper.component.html',
-  styleUrls: ['./stepper.component.scss']
+  styleUrls: ['./stepper.component.scss'],
 })
 export class StepperComponent implements OnDestroy {
   private readonly subscription: Subscription;
@@ -29,27 +33,34 @@ export class StepperComponent implements OnDestroy {
 
   constructor(private storageService: StorageService) {
     storageService.storeCurrentStep(1);
-    this.subscription = storageService.storedCurrentStep$.subscribe(currentStep => {
-      this.handleStyle(currentStep);
-    });
+    this.subscription = storageService.storedCurrentStep$.subscribe(
+      (currentStep) => {
+        this.handleStyle(currentStep);
+      }
+    );
   }
 
   private handleStyle(currentStep: number): void {
     currentStep = currentStep === 0 ? 1 : currentStep;
-    this.stepOneStyle = currentStep === 1 ? StepStatusStyle.ACTIVE : StepStatusStyle.DONE;
-    this.stepTwoStyle = currentStep === 2
-      ? StepStatusStyle.ACTIVE
-      : currentStep > 2
+    this.stepOneStyle =
+      currentStep === 1 ? StepStatusStyle.ACTIVE : StepStatusStyle.DONE;
+    this.stepTwoStyle =
+      currentStep === 2
+        ? StepStatusStyle.ACTIVE
+        : currentStep > 2
         ? StepStatusStyle.DONE
         : StepStatusStyle.PENDING;
-    this.stepThreeStyle = currentStep === 3
-      ? StepStatusStyle.ACTIVE
-      : currentStep > 3
+    this.stepThreeStyle =
+      currentStep === 3
+        ? StepStatusStyle.ACTIVE
+        : currentStep > 3
         ? StepStatusStyle.DONE
         : StepStatusStyle.PENDING;
 
-    this.stepOneLineStyle = currentStep > 1 ? StepStatusStyle.DONE : StepStatusStyle.PENDING;
-    this.stepTwoLineStyle = currentStep > 2 ? StepStatusStyle.DONE : StepStatusStyle.PENDING;
+    this.stepOneLineStyle =
+      currentStep > 1 ? StepStatusStyle.DONE : StepStatusStyle.PENDING;
+    this.stepTwoLineStyle =
+      currentStep > 2 ? StepStatusStyle.DONE : StepStatusStyle.PENDING;
 
     this.stepOneDone = currentStep > 1;
     this.stepTwoDone = currentStep > 2;

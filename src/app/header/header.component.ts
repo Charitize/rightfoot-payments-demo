@@ -13,6 +13,9 @@ export class HeaderComponent {
   constructor(private storageService: StorageService) {
   }
 
+  /**
+   * Clear session storage to return to the initial page
+   */
   reset() {
     this.storageService.clearAll();
     window.location.reload();
