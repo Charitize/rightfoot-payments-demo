@@ -1,6 +1,6 @@
-import { Beneficiary } from "./shared/beneficiary.interface";
-import { BehaviorSubject } from "rxjs";
-import { Injectable } from "@angular/core";
+import { Beneficiary } from './shared/beneficiary.interface';
+import { BehaviorSubject } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 /**
  * This static service is used to store required data for requests.
@@ -8,15 +8,15 @@ import { Injectable } from "@angular/core";
  * objects we create through Rightfoot Public API is stored.
  */
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class StorageService {
-  private static readonly USER_ID_KEY = "b_uuid";
-  private static readonly PLAID_TOKEN_KEY = "pl_t";
-  private static readonly PAYMENTS_ENABLED_KEY = "p_e";
-  private static readonly PAYMENT_UUID_KEY = "p_u";
-  private static readonly PAYMENT_RESPONSE = "p_resp";
-  private static readonly CURRENT_STEP = "current_step";
+  private static readonly USER_ID_KEY = 'b_uuid';
+  private static readonly PLAID_TOKEN_KEY = 'pl_t';
+  private static readonly PAYMENTS_ENABLED_KEY = 'p_e';
+  private static readonly PAYMENT_UUID_KEY = 'p_u';
+  private static readonly PAYMENT_RESPONSE = 'p_resp';
+  private static readonly CURRENT_STEP = 'current_step';
 
   private static readonly storage = window.sessionStorage;
 

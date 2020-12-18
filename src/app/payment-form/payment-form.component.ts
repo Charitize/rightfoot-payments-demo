@@ -1,14 +1,14 @@
-import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { UnitedStatesTerritories } from "../shared/us-states-and-territories";
-import { phoneNumberValidator } from "../shared/phone-number.validator";
-import { RightfootApiService } from "../rightfoot-api.service";
-import { DemographicsFormValue } from "../shared/demographics-form-value.interface";
-import { StorageService } from "../storage.service";
-import { combineLatest, Observable, of, throwError } from "rxjs";
-import { map, switchMap, take } from "rxjs/operators";
-import { PlaidService } from "../plaid.service";
-import { Payment } from "../shared/payment.interface";
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UnitedStatesTerritories } from '../shared/us-states-and-territories';
+import { phoneNumberValidator } from '../shared/phone-number.validator';
+import { RightfootApiService } from '../rightfoot-api.service';
+import { DemographicsFormValue } from '../shared/demographics-form-value.interface';
+import { StorageService } from '../storage.service';
+import { combineLatest, Observable, of, throwError } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
+import { PlaidService } from '../plaid.service';
+import { Payment } from '../shared/payment.interface';
 
 /**
  * This component provides a form with a payment amount input and a "Pay" button.
@@ -16,9 +16,9 @@ import { Payment } from "../shared/payment.interface";
  * corresponding form fields will also be visible and available for filling.
  */
 @Component({
-  selector: "app-payment-form",
-  templateUrl: "./payment-form.component.html",
-  styleUrls: ["./payment-form.component.scss"],
+  selector: 'app-payment-form',
+  templateUrl: './payment-form.component.html',
+  styleUrls: ['./payment-form.component.scss'],
 })
 export class PaymentFormComponent implements OnInit {
   constructor(
@@ -28,14 +28,14 @@ export class PaymentFormComponent implements OnInit {
   ) {}
 
   private get demographicsFormValue(): DemographicsFormValue {
-    return this.form.get("demographics").value as DemographicsFormValue;
+    return this.form.get('demographics').value as DemographicsFormValue;
   }
 
   /**
    * Returns amount value as a float.
    */
   private get amount(): number {
-    const value = this.form.get("amount").value;
+    const value = this.form.get('amount').value;
     if (value === undefined) {
       return null;
     }
@@ -46,7 +46,7 @@ export class PaymentFormComponent implements OnInit {
    * Form definition with validators.
    */
   public form: FormGroup = new FormGroup({
-    amount: new FormControl("", [Validators.required]),
+    amount: new FormControl('', [Validators.required]),
   });
 
   /**
@@ -83,7 +83,7 @@ export class PaymentFormComponent implements OnInit {
       state: new FormControl(null, [Validators.required]),
       zipCode: new FormControl(null, [
         Validators.required,
-        Validators.pattern("\\d{5}(-\\d{4})?"),
+        Validators.pattern('\\d{5}(-\\d{4})?'),
       ]),
     });
   }
@@ -92,7 +92,7 @@ export class PaymentFormComponent implements OnInit {
     // We add demographics related fields dynamically if they are not provided yet.
     if (!this.isDemographicsInfoProvided) {
       this.form.addControl(
-        "demographics",
+        'demographics',
         PaymentFormComponent.initializeDemographicsFormGroup()
       );
     }
@@ -121,8 +121,8 @@ export class PaymentFormComponent implements OnInit {
         this.storageService.storeCurrentStep(1);
         console.error(error);
         console.warn(
-          "Something went wrong and the application state is cleared. " +
-            "Please reload this page and try again."
+          'Something went wrong and the application state is cleared. ' +
+            'Please reload this page and try again.'
         );
       },
       () => {
@@ -156,8 +156,8 @@ export class PaymentFormComponent implements OnInit {
           );
         }
         return throwError(
-          "Payments are not enabled. " +
-            "Something went wrong with linking the user with the plaid token."
+          'Payments are not enabled. ' +
+            'Something went wrong with linking the user with the plaid token.'
         );
       })
     );
@@ -215,16 +215,16 @@ export class PaymentFormComponent implements OnInit {
   fillExampleData() {
     this.form.setValue({
       demographics: {
-        firstName: "John",
-        lastName: "Doe",
-        phoneNumber: "+1234567890",
-        dateOfBirth: new Date("12/1/1980"),
+        firstName: 'John',
+        lastName: 'Doe',
+        phoneNumber: '+1234567890',
+        dateOfBirth: new Date('12/1/1980'),
         mailingAddress: {
-          line1: "1600 Pennsylvania Avenue",
-          line2: "",
-          city: "Washington",
-          state: "DC",
-          zipCode: "20001",
+          line1: '1600 Pennsylvania Avenue',
+          line2: '',
+          city: 'Washington',
+          state: 'DC',
+          zipCode: '20001',
         },
       },
       amount: 100,
