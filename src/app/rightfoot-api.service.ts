@@ -82,7 +82,11 @@ export class RightfootApiService {
 
     return this.httpClient.post<PaymentResponse>(RightfootApiService.PAYMENTS_URL, request).pipe(
       map(response => response.payment),
-      tap(payment => this.storageService.storePaymentUuid(payment.uuid))
+      tap(payment => {
+        this.storageService.storePaymentUuid(payment.uuid);
+        this.storageService.storeResponse(JSON.stringify(payment));
+        this.storageService.storeCurrentStep(3);
+      })
     );
   }
 

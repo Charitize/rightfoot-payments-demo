@@ -18,19 +18,35 @@ import { Payment } from '../shared/payment.interface';
 @Component({
   selector: 'app-payment-form',
   templateUrl: './payment-form.component.html',
-  styleUrls: [ './payment-form.component.scss' ]
+  styleUrls: ['./payment-form.component.scss'],
 })
 export class PaymentFormComponent implements OnInit {
-  constructor(private apiService: RightfootApiService,
-              private plaidService: PlaidService,
-              private storageService: StorageService) {
+  constructor(
+    private apiService: RightfootApiService,
+    private plaidService: PlaidService,
+    private storageService: StorageService
+  ) {}
+
+  private get demographicsFormValue(): DemographicsFormValue {
+    return this.form.get('demographics').value as DemographicsFormValue;
+  }
+
+  /**
+   * Returns amount value as a float.
+   */
+  private get amount(): number {
+    const value = this.form.get('amount').value;
+    if (value === undefined) {
+      return null;
+    }
+    return parseFloat(value);
   }
 
   /**
    * Form definition with validators.
    */
   public form: FormGroup = new FormGroup({
-    amount: new FormControl('', [ Validators.required ])
+    amount: new FormControl('', [Validators.required]),
   });
 
   /**
@@ -48,27 +64,27 @@ export class PaymentFormComponent implements OnInit {
 
   private static initializeDemographicsFormGroup(): FormGroup {
     return new FormGroup({
-      firstName: new FormControl(null, [ Validators.required ]),
-      lastName: new FormControl(null, [ Validators.required ]),
+      firstName: new FormControl(null, [Validators.required]),
+      lastName: new FormControl(null, [Validators.required]),
       phoneNumber: new FormControl(null, [
         Validators.required,
-        phoneNumberValidator
+        phoneNumberValidator,
       ]),
-      dateOfBirth: new FormControl(null, [ Validators.required ]),
-      mailingAddress: PaymentFormComponent.initializeMailingAddressFormGroup()
+      dateOfBirth: new FormControl(null, [Validators.required]),
+      mailingAddress: PaymentFormComponent.initializeMailingAddressFormGroup(),
     });
   }
 
   private static initializeMailingAddressFormGroup(): FormGroup {
     return new FormGroup({
-      line1: new FormControl(null, [ Validators.required ]),
+      line1: new FormControl(null, [Validators.required]),
       line2: new FormControl(null),
-      city: new FormControl(null, [ Validators.required ]),
-      state: new FormControl(null, [ Validators.required ]),
+      city: new FormControl(null, [Validators.required]),
+      state: new FormControl(null, [Validators.required]),
       zipCode: new FormControl(null, [
         Validators.required,
-        Validators.pattern('\\d{5}(-\\d{4})?')
-      ])
+        Validators.pattern('\\d{5}(-\\d{4})?'),
+      ]),
     });
   }
 
@@ -102,10 +118,19 @@ export class PaymentFormComponent implements OnInit {
         this.loading = false;
         this.form.enable();
         this.storageService.clearAll();
+        this.storageService.storeCurrentStep(1);
         console.error(error);
-        console.warn('Something went wrong and the application state is cleared. ' +
-          'Please reload this page and try again.');
-      });
+        console.warn(
+          'Something went wrong and the application state is cleared. ' +
+            'Please reload this page and try again.'
+        );
+      },
+      () => {
+        // If user close plaid view we should show enabled previous form
+        this.loading = false;
+        this.form.enable();
+      }
+    );
   }
 
   /**
@@ -115,13 +140,15 @@ export class PaymentFormComponent implements OnInit {
   private createPayment(): Observable<Payment> {
     return combineLatest([
       this.getUserIdStream(),
-      this.getPlaidTokenStream()
+      this.getPlaidTokenStream(),
     ]).pipe(
       take(1),
       switchMap(([uuid, plaidToken]) => {
+        this.storageService.storeCurrentStep(2);
         return this.getPaymentsEnabledStream(uuid, plaidToken);
       }),
-      switchMap(paymentsEnabled => {
+      switchMap((paymentsEnabled) => {
+        this.storageService.storeCurrentStep(3);
         if (paymentsEnabled) {
           return this.apiService.createPayment(
             this.storageService.getStoredUserId(),
@@ -129,8 +156,9 @@ export class PaymentFormComponent implements OnInit {
           );
         }
         return throwError(
-            'Payments are not enabled. ' +
-            'Something went wrong with linking the user with the plaid token.');
+          'Payments are not enabled. ' +
+            'Something went wrong with linking the user with the plaid token.'
+        );
       })
     );
   }
@@ -141,8 +169,9 @@ export class PaymentFormComponent implements OnInit {
   private getUserIdStream(): Observable<string> {
     const storedUserId = this.storageService.getStoredUserId();
     if (!storedUserId) {
-      return this.apiService.createBeneficiary(this.demographicsFormValue)
-        .pipe(map(beneficiary => beneficiary.uuid));
+      return this.apiService
+        .createBeneficiary(this.demographicsFormValue)
+        .pipe(map((beneficiary) => beneficiary.uuid));
     }
     return of(storedUserId);
   }
@@ -153,8 +182,9 @@ export class PaymentFormComponent implements OnInit {
   private getPlaidTokenStream(): Observable<string> {
     const storedToken = this.storageService.getStoredPlaidToken();
     if (!storedToken) {
-      return this.plaidService.addPlaidLoan()
-        .pipe(map(plaidResponse => plaidResponse.token));
+      return this.plaidService
+        .addPlaidLoan()
+        .pipe(map((plaidResponse) => plaidResponse.token));
     }
     return of(storedToken);
   }
@@ -164,29 +194,40 @@ export class PaymentFormComponent implements OnInit {
    * @param beneficiaryUuid Unique identifier generated by Rightfoot.
    * @param token Public token obtained from Plaid using Rightfoot's Plaid public key.
    */
-  private getPaymentsEnabledStream(beneficiaryUuid: string, token: string): Observable<boolean> {
+  private getPaymentsEnabledStream(
+    beneficiaryUuid: string,
+    token: string
+  ): Observable<boolean> {
     const storedPaymentsEnabled = this.storageService.getStoredPaymentsEnabled();
     // If stored payments is null it means it wasn't set yet
     // so addPlaidToken request hasn't been performed yet.
     if (storedPaymentsEnabled === null) {
-      return this.apiService.addPlaidToken(beneficiaryUuid, token)
-        .pipe(map(beneficiary => beneficiary.paymentsEnabled));
+      return this.apiService
+        .addPlaidToken(beneficiaryUuid, token)
+        .pipe(map((beneficiary) => beneficiary.paymentsEnabled));
     }
     return of(storedPaymentsEnabled);
   }
 
-  private get demographicsFormValue(): DemographicsFormValue {
-    return this.form.get('demographics').value as DemographicsFormValue;
-  }
-
   /**
-   * Returns amount value as a float.
+   * Set demo values to the form
    */
-  private get amount(): number {
-    const value = this.form.get('amount').value;
-    if (value === undefined) {
-      return null;
-    }
-    return parseFloat(value);
+  fillExampleData() {
+    this.form.setValue({
+      demographics: {
+        firstName: 'John',
+        lastName: 'Doe',
+        phoneNumber: '+1234567890',
+        dateOfBirth: new Date('12/1/1980'),
+        mailingAddress: {
+          line1: '1600 Pennsylvania Avenue',
+          line2: '',
+          city: 'Washington',
+          state: 'DC',
+          zipCode: '20001',
+        },
+      },
+      amount: 100,
+    });
   }
 }

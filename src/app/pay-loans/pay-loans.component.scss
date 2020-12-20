@@ -1,5 +1,43 @@
 :host {
-  display: block;
-  // Adjustment for the header.
-  padding-top: 64px;
+  padding: 45px;
+
+  .logo-title {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100px;
+    height: auto;
+    vertical-align: center;
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+
+  .form-card {
+    z-index: 2;
+    border-radius: 16px;
+    max-width: 55%;
+    padding: 40px;
+    margin: auto;
+
+    & .form-card {
+      // Remove card styling for smaller displays.
+      @media screen and (max-width: 620px) {
+        box-shadow: none;
+        margin-top: 15px;
+        background-color: transparent;
+        padding: 0 0 30px;
+        border-radius: 0;
+        max-width: 100%;
+
+        mat-form-field {
+          width: 100%;
+          font-family: Inter, sans-serif;
+          font-style: normal;
+          font-weight: bold;
+          font-size: 14px;
+          line-height: 17px;
+        }
+      }
+    }
+  }
 }

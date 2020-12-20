@@ -1,11 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+@import "assets/styles/colors";
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: rgba(252,252,252,.75);
+  background-color: $light-purple;
 }
