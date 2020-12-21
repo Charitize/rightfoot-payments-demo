@@ -8,23 +8,35 @@ import { Injectable } from '@angular/core';
  * objects we create through Rightfoot Public API is stored.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StorageService {
   private static readonly USER_ID_KEY = 'b_uuid';
   private static readonly PLAID_TOKEN_KEY = 'pl_t';
   private static readonly PAYMENTS_ENABLED_KEY = 'p_e';
   private static readonly PAYMENT_UUID_KEY = 'p_u';
+  private static readonly PAYMENT_RESPONSE = 'p_resp';
+  private static readonly CURRENT_STEP = 'current_step';
 
   private static readonly storage = window.sessionStorage;
 
-  private storedPaymentUuidSubject: BehaviorSubject<string> =
-    new BehaviorSubject<string>(this.getStoredPaymentUuid());
+  private storedPaymentUuidSubject: BehaviorSubject<string> = new BehaviorSubject<string>(
+    this.getStoredPaymentUuid()
+  );
 
   /**
    * Returns stream with a currently stored payment uuid.
    */
   public storedPaymentUuid$ = this.storedPaymentUuidSubject.asObservable();
+
+  private storedCurrentStepSubject: BehaviorSubject<number> = new BehaviorSubject<number>(
+    this.getStoredCurrentStep()
+  );
+
+  /**
+   * Returns stream with a currently stored current step.
+   */
+  public storedCurrentStep$ = this.storedCurrentStepSubject.asObservable();
 
   /**
    * Returns cached user id.
@@ -38,7 +50,10 @@ export class StorageService {
    * @param beneficiary user to store id for.
    */
   public storeUserId(beneficiary: Beneficiary): void {
-    StorageService.storage.setItem(StorageService.USER_ID_KEY, beneficiary.uuid);
+    StorageService.storage.setItem(
+      StorageService.USER_ID_KEY,
+      beneficiary.uuid
+    );
   }
 
   /**
@@ -71,7 +86,9 @@ export class StorageService {
    * which indicates if payments are enabled for this user.
    */
   public getStoredPaymentsEnabled(): boolean | null {
-    const value = StorageService.storage.getItem(StorageService.PAYMENTS_ENABLED_KEY);
+    const value = StorageService.storage.getItem(
+      StorageService.PAYMENTS_ENABLED_KEY
+    );
     return value ? JSON.parse(value) : null;
   }
 
@@ -96,5 +113,37 @@ export class StorageService {
    */
   public clearAll(): void {
     StorageService.storage.clear();
+  }
+
+  /**
+   * Store full response from Plaid.
+   */
+  public storeResponse(response: string): void {
+    StorageService.storage.setItem(StorageService.PAYMENT_RESPONSE, response);
+  }
+
+  /**
+   * Returns stored response.
+   */
+  public getStoredPlaidResponse(): string {
+    return StorageService.storage.getItem(StorageService.PAYMENT_RESPONSE);
+  }
+
+  /**
+   * Store current step.
+   */
+  public storeCurrentStep(currentStep: number): void {
+    this.storedCurrentStepSubject.next(currentStep);
+    StorageService.storage.setItem(
+      StorageService.CURRENT_STEP,
+      String(currentStep)
+    );
+  }
+
+  /**
+   * Returns stored current step.
+   */
+  public getStoredCurrentStep(): number {
+    return Number(StorageService.storage.getItem(StorageService.CURRENT_STEP));
   }
 }
