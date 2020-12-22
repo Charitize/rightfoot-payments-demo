@@ -35,7 +35,6 @@ export class StepperComponent implements OnDestroy {
   stepThreeDone = false;
 
   constructor(private storageService: StorageService) {
-    storageService.storeCurrentStep(1);
     this.subscription = storageService.storedCurrentStep$.subscribe(
       (currentStep) => {
         this.handleStyle(currentStep);

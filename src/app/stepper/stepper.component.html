@@ -2,28 +2,23 @@
   <div class="stepper-line">
     <div [ngClass]="stepOneStyle">
       <mat-label *ngIf="!stepOneDone; else done">1</mat-label>
-      <ng-template #done>
-        <mat-icon>done</mat-icon>
-      </ng-template>
     </div>
 
     <span [ngClass]="stepOneLineStyle"></span>
 
     <div [ngClass]="stepTwoStyle">
       <mat-label *ngIf="!stepTwoDone; else done">2</mat-label>
-      <ng-template #done>
-        <mat-icon>done</mat-icon>
-      </ng-template>
     </div>
 
     <span [ngClass]="stepTwoLineStyle"></span>
 
     <div [ngClass]="stepThreeStyle">
       <mat-label *ngIf="!stepThreeDone; else done">3</mat-label>
-      <ng-template #done>
-        <mat-icon>done</mat-icon>
-      </ng-template>
     </div>
+
+    <ng-template #done>
+      <mat-icon>done</mat-icon>
+    </ng-template>
   </div>
   <div class="stepper-title">
     <mat-label [ngClass]="stepOneStyle">Fill the information</mat-label>
