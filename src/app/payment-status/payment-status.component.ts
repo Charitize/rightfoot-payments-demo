@@ -43,7 +43,7 @@ export class PaymentStatusComponent implements OnDestroy {
     this.subscription = this.storageService.storedPaymentUuid$
       .pipe(switchMap((uuid) => this.apiService.getPayment(uuid)))
       .subscribe((payment) => {
-        this.statusResponse = JSON.stringify(payment);
+        this.statusResponse = JSON.stringify(JSON.parse(payment.toString()), null, 2);
       });
   }
 }
