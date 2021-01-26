@@ -6,12 +6,12 @@ import { Environment, PlaidEnvironment } from './environment.interface';
 
 export const environment: Environment = {
   production: false,
-  apiUrl: 'http://localhost:4200/v1',
+  apiUrl: 'https://sandbox.api.engineering.rightfoot.com/v1',
   plaid: {
     environment: PlaidEnvironment.SANDBOX,
     publicKey: '1773c898604f2bd4d68ecbbc8504f9'
   },
-  personalApiKey: 'SANDBOX-ea6dba36ce97d30b4593afb7785d7b1c301a461771eb1acc9e4e9ad413eaf41e91f5ce44649185b7e47eba3fc98bfaa5d51dd4b8c13c90b1368457c63399e574'
+  personalApiKey: 'SANDBOX-552fde8607de635f6c64f1e3259c0dbb77be93a6cf80af03e13938b1a2a1d572794b8b019abe27a0b20768725d5de7cddfa1e6ad64ac4c88eea2892f825c0458'
 };
 
 /*

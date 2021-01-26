@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { StorageService } from '../storage.service';
+import { switchMap } from 'rxjs/operators';
+import { RightfootApiService } from '../rightfoot-api.service';
+import { Subscription } from 'rxjs';
 
 /**
  * Styled component which is showing Status/Result of the payment via Plaid service.
@@ -9,13 +12,17 @@ import { StorageService } from '../storage.service';
   templateUrl: './payment-status.component.html',
   styleUrls: ['./payment-status.component.scss'],
 })
-export class PaymentStatusComponent {
+export class PaymentStatusComponent implements OnDestroy {
+  private subscription: Subscription;
   /**
    * Payment status response binding.
    */
   statusResponse: string;
 
-  constructor(private storageService: StorageService) {
+  constructor(
+    private apiService: RightfootApiService,
+    private storageService: StorageService
+  ) {
     this.statusResponse = JSON.stringify(
       JSON.parse(this.storageService.getStoredPlaidResponse()),
       null,
@@ -23,14 +30,20 @@ export class PaymentStatusComponent {
     );
   }
 
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
   /**
-   * Set payment status response from the storage.
+   * Retrieves payment status
    */
-  checkStatus() {
-    this.statusResponse = JSON.stringify(
-      JSON.parse(this.storageService.getStoredPlaidResponse()),
-      null,
-      2
-    );
+  public checkStatus() {
+    this.subscription = this.storageService.storedPaymentUuid$
+      .pipe(switchMap((uuid) => this.apiService.getPayment(uuid)))
+      .subscribe((payment) => {
+        this.statusResponse = JSON.stringify(payment);
+      });
   }
 }
