@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { StorageService } from '../storage.service';
-import {switchMap, take} from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 import { RightfootApiService } from '../rightfoot-api.service';
 
 /**
