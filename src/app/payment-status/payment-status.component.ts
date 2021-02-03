@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { StorageService } from '../storage.service';
+import { switchMap, take } from 'rxjs/operators';
+import { RightfootApiService } from '../rightfoot-api.service';
 
 /**
  * Styled component which is showing Status/Result of the payment via Plaid service.
@@ -15,7 +17,10 @@ export class PaymentStatusComponent {
    */
   statusResponse: string;
 
-  constructor(private storageService: StorageService) {
+  constructor(
+    private apiService: RightfootApiService,
+    private storageService: StorageService
+  ) {
     this.statusResponse = JSON.stringify(
       JSON.parse(this.storageService.getStoredPlaidResponse()),
       null,
@@ -24,13 +29,15 @@ export class PaymentStatusComponent {
   }
 
   /**
-   * Set payment status response from the storage.
+   * Retrieves payment status.
    */
-  checkStatus() {
-    this.statusResponse = JSON.stringify(
-      JSON.parse(this.storageService.getStoredPlaidResponse()),
-      null,
-      2
-    );
+  public checkStatus() {
+    this.storageService.storedPaymentUuid$
+      .pipe(
+        switchMap((uuid) => this.apiService.getPayment(uuid)),
+        take(1))
+      .subscribe((payment) => {
+        this.statusResponse = JSON.stringify(JSON.parse(payment.toString()), null, 2);
+      });
   }
 }
