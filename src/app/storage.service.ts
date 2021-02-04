@@ -136,7 +136,7 @@ export class StorageService {
     this.storedCurrentStepSubject.next(currentStep);
     StorageService.storage.setItem(
       StorageService.CURRENT_STEP,
-      String(currentStep)
+      currentStep.toString()
     );
   }
 
@@ -144,6 +144,6 @@ export class StorageService {
    * Returns stored current step.
    */
   public getStoredCurrentStep(): number {
-    return Number(StorageService.storage.getItem(StorageService.CURRENT_STEP));
+    return parseInt(StorageService.storage.getItem(StorageService.CURRENT_STEP), 10);
   }
 }
