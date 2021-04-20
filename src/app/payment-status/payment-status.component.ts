@@ -37,7 +37,7 @@ export class PaymentStatusComponent {
         switchMap((uuid) => this.apiService.getPayment(uuid)),
         take(1))
       .subscribe((payment) => {
-        this.statusResponse = JSON.stringify(JSON.parse(payment.toString()), null, 2);
+        this.statusResponse = JSON.stringify(payment, null, 2);
       });
   }
 }
