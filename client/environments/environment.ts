@@ -6,7 +6,7 @@ import { Environment, PlaidEnvironment } from './environment.interface';
 
 export const environment: Environment = {
   production: false,
-  apiUrl: 'http://localhost:4200/v1',
+  apiUrl: 'http://localhost:8080/api',
   plaid: {
     environment: PlaidEnvironment.SANDBOX,
     publicKey: '1773c898604f2bd4d68ecbbc8504f9'
