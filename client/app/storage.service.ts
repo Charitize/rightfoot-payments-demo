@@ -1,4 +1,4 @@
-import { Beneficiary } from './shared/beneficiary.interface';
+import { Beneficiary } from 'rightfoot-node/1-3/api';
 import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
