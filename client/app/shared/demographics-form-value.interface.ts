@@ -1,27 +1,7 @@
-import { MailingAddress } from './mailing-address.interface';
+import { CreateBeneficiaryRequest } from 'rightfoot-node/1-3/api';
 
 /**
  * This interface corresponds to demographics form group's value.
  */
-export interface DemographicsFormValue {
-  /**
-   * The given name of the beneficiary.
-   */
-  firstName: string;
-  /**
-   * The family name of the beneficiary.
-   */
-  lastName: string;
-  /**
-   * Birth date for the beneficiary formatted as YYYY-MM-DD.
-   */
-  dateOfBirth: Date;
-  /**
-   * Phone number for the beneficiary inputted by user.
-   */
-  phoneNumber: string;
-  /**
-   * Mailing address for the beneficiary, to be provided to payment provider.
-   */
-  mailingAddress: MailingAddress;
-}
+// TODO(willjschmitt): Unify form value to be entirely CreateBeneficiaryRequest.
+export type DemographicsFormValue = Omit<CreateBeneficiaryRequest, 'dateOfBirth'> & { dateOfBirth: Date; };

@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { combineLatest, Observable, of, throwError } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
+import { Payment } from 'rightfoot-node/1-3/api';
 
 import { UnitedStatesTerritories } from '../shared/us-states-and-territories';
 import { phoneNumberValidator } from '../shared/phone-number.validator';
@@ -10,7 +11,6 @@ import { RightfootApiService } from '../rightfoot-api.service';
 import { DemographicsFormValue } from '../shared/demographics-form-value.interface';
 import { StorageService } from '../storage.service';
 import { PlaidService } from '../plaid.service';
-import { Payment } from '../shared/payment.interface';
 
 /**
  * This component provides a form with a payment amount input and a "Pay" button.

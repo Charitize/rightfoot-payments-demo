@@ -3,9 +3,9 @@ import { MatExpansionPanel } from '@angular/material/expansion';
 
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { Payment } from 'rightfoot-node/1-3/api';
 
 import { RightfootApiService } from '../rightfoot-api.service';
-import { Payment } from '../shared/payment.interface';
 import { StorageService } from '../storage.service';
 
 /**
