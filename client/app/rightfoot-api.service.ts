@@ -1,19 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { formatDate } from '@angular/common';
+
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
-import { environment } from '../environments/environment';
-import { DemographicsFormValue } from './shared/demographics-form-value.interface';
-import { BeneficiaryRequest } from './shared/beneficiary-request.interface';
 import { Observable } from 'rxjs';
-import { Beneficiary } from './shared/beneficiary.interface';
-import { StorageService } from './storage.service';
-import { Payment } from './shared/payment.interface';
 import { map, tap } from 'rxjs/operators';
+
+import { BeneficiaryRequest } from './shared/beneficiary-request.interface';
+import { Beneficiary } from './shared/beneficiary.interface';
+import { Payment } from './shared/payment.interface';
 import { BeneficiaryResponse } from './shared/beneficiary-response.interface';
 import { AddPlaidTokenRequest } from './shared/add-plaid-token-request';
 import { CreatePaymentRequest } from './shared/create-payment-request.interface';
 import { PaymentResponse } from './shared/payment-response.interface';
+import { environment } from '../environments/environment';
+import { StorageService } from './storage.service';
+import { DemographicsFormValue } from './shared/demographics-form-value.interface';
 
 /**
  * This service is used for communication with the Rightfoot Public API server

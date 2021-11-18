@@ -1,10 +1,12 @@
 import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
-import { RightfootApiService } from '../rightfoot-api.service';
+import { MatExpansionPanel } from '@angular/material/expansion';
+
 import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+
+import { RightfootApiService } from '../rightfoot-api.service';
 import { Payment } from '../shared/payment.interface';
 import { StorageService } from '../storage.service';
-import { switchMap } from 'rxjs/operators';
-import { MatExpansionPanel } from '@angular/material/expansion';
 
 /**
  * This component is used as a success page which is shown after payment is made.
