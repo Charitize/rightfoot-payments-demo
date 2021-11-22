@@ -60,7 +60,7 @@ export class PaymentFormComponent implements OnInit {
   /**
    * Exposing this value to dynamically show/hide demographics related template.
    */
-  public isDemographicsInfoProvided = !!this.storageService.getStoredUserId();
+  public isDemographicsInfoProvided = !!this.storageService.getStoredBeneficiaryId();
 
   /** To show a loader. */
   public loading = false;
@@ -153,7 +153,7 @@ export class PaymentFormComponent implements OnInit {
       switchMap((paymentsEnabled) => {
         if (paymentsEnabled) {
           const payment$ = this.apiService.createPayment(
-            this.storageService.getStoredUserId(),
+            this.storageService.getStoredBeneficiaryId(),
             this.amount
           );
           this.storageService.storeCurrentStep(DemoProgress.CHECK_PAYMENT);
@@ -171,7 +171,7 @@ export class PaymentFormComponent implements OnInit {
    * Returns cached user id if present or performs create beneficiary request otherwise.
    */
   private getUserIdStream(): Observable<string> {
-    const storedUserId = this.storageService.getStoredUserId();
+    const storedUserId = this.storageService.getStoredBeneficiaryId();
     if (!storedUserId) {
       return this.apiService
         .createBeneficiary(this.demographicsFormValue)

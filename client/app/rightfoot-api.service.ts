@@ -51,7 +51,7 @@ export class RightfootApiService {
 
     return this.httpClient.post<CreateBeneficiaryResponse>(RightfootApiService.CREATE_BENEFICIARY_URL, request).pipe(
       map(response => response.beneficiary),
-      tap(beneficiary => this.storageService.storeUserId(beneficiary))
+      tap(beneficiary => this.storageService.storeBeneficiaryId(beneficiary))
     );
   }
 
