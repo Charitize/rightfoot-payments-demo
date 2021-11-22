@@ -92,7 +92,7 @@ export class RightfootApiService {
       map(response => response.payment),
       tap(payment => {
         this.storageService.storePaymentUuid(payment.uuid);
-        this.storageService.storeResponse(JSON.stringify(payment));
+        this.storageService.storePaymentResponse(payment);
         this.storageService.storeCurrentStep(DemoProgress.CHECK_PAYMENT);
       })
     );
