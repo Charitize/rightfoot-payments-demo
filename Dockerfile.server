@@ -1,0 +1,12 @@
+FROM node:alpine
+
+WORKDIR /var/demo-server
+
+COPY ./package.json .
+COPY ./yarn.lock .
+RUN yarn install
+
+COPY ./dist/out-tsc/server .
+CMD ["node", "/var/demo-server/main.js"]
+
+EXPOSE 8080
