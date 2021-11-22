@@ -19,6 +19,7 @@ import { map, tap } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { StorageService } from './storage.service';
 import { DemographicsFormValue } from './demographics-form-value.interface';
+import { DemoProgress } from './demo-progress';
 
 /**
  * This service is used for communication with the Rightfoot Public API server
@@ -92,7 +93,7 @@ export class RightfootApiService {
       tap(payment => {
         this.storageService.storePaymentUuid(payment.uuid);
         this.storageService.storeResponse(JSON.stringify(payment));
-        this.storageService.storeCurrentStep(3);
+        this.storageService.storeCurrentStep(DemoProgress.CHECK_PAYMENT);
       })
     );
   }

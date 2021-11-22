@@ -1,6 +1,7 @@
 import { Beneficiary } from 'rightfoot-node/1-3/api';
 import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { DemoProgress } from './demo-progress';
 
 /**
  * This static service is used to store required data for requests.
@@ -29,7 +30,7 @@ export class StorageService {
    */
   public storedPaymentUuid$ = this.storedPaymentUuidSubject.asObservable();
 
-  private storedCurrentStepSubject: BehaviorSubject<number> = new BehaviorSubject<number>(
+  private storedCurrentStepSubject: BehaviorSubject<DemoProgress> = new BehaviorSubject<number>(
     this.getStoredCurrentStep()
   );
 
@@ -132,7 +133,7 @@ export class StorageService {
   /**
    * Store current step.
    */
-  public storeCurrentStep(currentStep: number): void {
+  public storeCurrentStep(currentStep: DemoProgress): void {
     this.storedCurrentStepSubject.next(currentStep);
     StorageService.storage.setItem(
       StorageService.CURRENT_STEP,
@@ -143,7 +144,7 @@ export class StorageService {
   /**
    * Returns stored current step.
    */
-  public getStoredCurrentStep(): number {
+  public getStoredCurrentStep(): DemoProgress {
     return parseInt(StorageService.storage.getItem(StorageService.CURRENT_STEP), 10);
   }
 }

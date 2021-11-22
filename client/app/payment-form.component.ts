@@ -11,6 +11,7 @@ import { RightfootApiService } from './rightfoot-api.service';
 import { DemographicsFormValue } from './demographics-form-value.interface';
 import { StorageService } from './storage.service';
 import { PlaidService } from './plaid.service';
+import { DemoProgress } from './demo-progress';
 
 /**
  * This component provides a form with a payment amount input and a "Pay" button.
@@ -120,7 +121,7 @@ export class PaymentFormComponent implements OnInit {
         this.loading = false;
         this.form.enable();
         this.storageService.clearAll();
-        this.storageService.storeCurrentStep(1);
+        this.storageService.storeCurrentStep(DemoProgress.CREATE_BENEFICIARY);
         console.error(error);
         console.warn(
           'Something went wrong and the application state is cleared. ' +
@@ -146,16 +147,17 @@ export class PaymentFormComponent implements OnInit {
     ]).pipe(
       take(1),
       switchMap(([uuid, plaidToken]) => {
-        this.storageService.storeCurrentStep(2);
+        this.storageService.storeCurrentStep(DemoProgress.CREATE_PAYMENT);
         return this.getPaymentsEnabledStream(uuid, plaidToken);
       }),
       switchMap((paymentsEnabled) => {
-        this.storageService.storeCurrentStep(3);
         if (paymentsEnabled) {
-          return this.apiService.createPayment(
+          const payment$ = this.apiService.createPayment(
             this.storageService.getStoredUserId(),
             this.amount
           );
+          this.storageService.storeCurrentStep(DemoProgress.CHECK_PAYMENT);
+          return payment$;
         }
         return throwError(
           'Payments are not enabled. ' +
@@ -182,6 +184,7 @@ export class PaymentFormComponent implements OnInit {
    * Returns cached plaid token if present or launches Plaid Link otherwise.
    */
   private getPlaidTokenStream(): Observable<string> {
+    this.storageService.storeCurrentStep(DemoProgress.LINK_LOAN);
     const storedToken = this.storageService.getStoredPlaidToken();
     if (!storedToken) {
       return this.plaidService
