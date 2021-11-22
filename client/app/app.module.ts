@@ -18,13 +18,13 @@ import { NgxPlaidLinkModule } from 'ngx-plaid-link';
 
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './auth.interceptor';
-import { HeaderComponent } from './header/header.component';
-import { PayLoansComponent } from './pay-loans/pay-loans.component';
-import { PaymentFormComponent } from './payment-form/payment-form.component';
-import { PaymentStatusComponent } from './payment-status/payment-status.component';
-import { PaymentSuccessComponent } from './payment-success/payment-success.component';
-import { StepperComponent } from './stepper/stepper.component';
-import { SuccessCheckComponent } from './success-check/success-check.component';
+import { HeaderComponent } from './header.component';
+import { PayLoansComponent } from './pay-loans.component';
+import { PaymentFormComponent } from './payment-form.component';
+import { PaymentStatusComponent } from './payment-status.component';
+import { PaymentSuccessComponent } from './payment-success.component';
+import { StepperComponent } from './stepper.component';
+import { SuccessCheckComponent } from './success-check.component';
 
 /** Primary entry point for the entire application. */
 @NgModule({

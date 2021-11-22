@@ -5,8 +5,8 @@ import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Payment } from 'rightfoot-node/1-3/api';
 
-import { RightfootApiService } from '../rightfoot-api.service';
-import { StorageService } from '../storage.service';
+import { RightfootApiService } from './rightfoot-api.service';
+import { StorageService } from './storage.service';
 
 /**
  * This component is used as a success page which is shown after payment is made.

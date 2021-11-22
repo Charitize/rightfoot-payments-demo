@@ -18,7 +18,7 @@ import { map, tap } from 'rxjs/operators';
 
 import { environment } from '../environments/environment';
 import { StorageService } from './storage.service';
-import { DemographicsFormValue } from './shared/demographics-form-value.interface';
+import { DemographicsFormValue } from './demographics-form-value.interface';
 
 /**
  * This service is used for communication with the Rightfoot Public API server
