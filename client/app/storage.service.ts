@@ -110,13 +110,6 @@ export class StorageService {
   }
 
   /**
-   * Resets application state.
-   */
-  public clearAll(): void {
-    StorageService.storage.clear();
-  }
-
-  /**
    * Store full Rightfoot payment creation response.
    */
   public storePaymentResponse(response: Payment): void {
@@ -146,5 +139,12 @@ export class StorageService {
    */
   private getStoredCurrentStep(): DemoProgress {
     return parseInt(StorageService.storage.getItem(StorageService.CURRENT_STEP), 10);
+  }
+
+  /**
+   * Resets application state.
+   */
+  public clearAll(): void {
+    StorageService.storage.clear();
   }
 }
