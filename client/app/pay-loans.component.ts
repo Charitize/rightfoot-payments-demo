@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { StorageService } from './storage.service';
-import { map, tap } from 'rxjs/operators';
+import { DemoProgress } from './demo-progress';
+import { Observable } from 'rxjs';
 
 /**
  * This is a page container component for making loan payments
@@ -12,23 +13,10 @@ import { map, tap } from 'rxjs/operators';
   styleUrls: ['./pay-loans.component.scss']
 })
 export class PayLoansComponent {
-  constructor(private storageService: StorageService) {
-  }
+  constructor(private storageService: StorageService) {}
 
-  /**
-   * When true, shows PaymentStatusComponent, otherwise PaymentFormComponent is rendered.
-   * @link PaymentSuccessComponent
-   * @link PaymentFormComponent
-   */
-  public isPaymentCreated$ = this.storageService.paymentId$.pipe(
-    map(id => !!id),
-    tap(() => {
-      // Fixes bug on mobile, when scroll didn't work after receiving token from plaid.
-      setTimeout(() => {
-        // When a displayed component is changed,
-        // scroll to the top of the page.
-        window.scroll(0, 0);
-      });
-    })
-  );
+  public DemoProgress = DemoProgress;
+
+  public currentStep$: Observable<DemoProgress> =
+      this.storageService.currentStep$;
 }

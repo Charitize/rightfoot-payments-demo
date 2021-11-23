@@ -20,18 +20,22 @@ import { AppComponent } from './app.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { HeaderComponent } from './header.component';
 import { PayLoansComponent } from './pay-loans.component';
-import { PaymentFormComponent } from './payment-form.component';
+import { CreateBeneficiaryComponent } from './create-beneficiary.component';
 import { PaymentStatusComponent } from './payment-status.component';
 import { PaymentSuccessComponent } from './payment-success.component';
 import { StepperComponent } from './stepper.component';
 import { SuccessCheckComponent } from './success-check.component';
+import { LinkLoanComponent } from './link-loan.component';
+import { CreatePaymentComponent } from './create-payment.component';
 
 /** Primary entry point for the entire application. */
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    PaymentFormComponent,
+    CreateBeneficiaryComponent,
+    CreatePaymentComponent,
+    LinkLoanComponent,
     PayLoansComponent,
     PaymentSuccessComponent,
     PaymentStatusComponent,

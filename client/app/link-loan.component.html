@@ -1,0 +1,17 @@
+<mat-card-content class="form-card__content">
+  <form>
+    <button
+        type="submit"
+        (click)="onLaunchPlaidLink()"
+        mat-flat-button
+        color="primary">
+        <span *ngIf="!loading; else loader">
+          <span>Link Loan</span>
+          <mat-icon>east</mat-icon>
+        </span>
+      <ng-template #loader>
+        <mat-progress-spinner mode="indeterminate" [diameter]="26"></mat-progress-spinner>
+      </ng-template>
+    </button>
+  </form>
+</mat-card-content>
