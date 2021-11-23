@@ -54,7 +54,7 @@ export class PaymentSuccessComponent implements AfterViewInit, OnDestroy {
       this.subscription.unsubscribe();
     }
     this.loading = true;
-    this.subscription = this.storageService.storedPaymentUuid$.pipe(
+    this.subscription = this.storageService.paymentId$.pipe(
       switchMap(uuid => this.apiService.getPayment(uuid))
     ).subscribe(payment => {
       this.payment = payment;
