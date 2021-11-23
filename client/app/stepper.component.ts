@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { StorageService } from './storage.service';
 import { Subscription } from 'rxjs';
+import { DemoProgress } from './demo-progress';
 
 /**
  * Stepper status
@@ -43,30 +44,33 @@ export class StepperComponent implements OnDestroy {
   }
 
   private handleStyle(currentStep: number): void {
-    currentStep = currentStep === 0 ? 1 : currentStep;
     this.stepOneStyle =
-      currentStep === 1 ? StepStatusStyle.ACTIVE : StepStatusStyle.DONE;
+      currentStep === DemoProgress.CREATE_BENEFICIARY ? StepStatusStyle.ACTIVE : StepStatusStyle.DONE;
     this.stepTwoStyle =
-      currentStep === 2
+      currentStep === DemoProgress.LINK_LOAN
         ? StepStatusStyle.ACTIVE
-        : currentStep > 2
+        : currentStep > DemoProgress.LINK_LOAN
         ? StepStatusStyle.DONE
         : StepStatusStyle.PENDING;
     this.stepThreeStyle =
-      currentStep === 3
+      currentStep === DemoProgress.CREATE_PAYMENT
         ? StepStatusStyle.ACTIVE
-        : currentStep > 3
+        : currentStep > DemoProgress.CREATE_PAYMENT
         ? StepStatusStyle.DONE
         : StepStatusStyle.PENDING;
 
     this.stepOneLineStyle =
-      currentStep > 1 ? StepStatusStyle.DONE : StepStatusStyle.PENDING;
+      currentStep > DemoProgress.CREATE_BENEFICIARY
+        ? StepStatusStyle.DONE
+        : StepStatusStyle.PENDING;
     this.stepTwoLineStyle =
-      currentStep > 2 ? StepStatusStyle.DONE : StepStatusStyle.PENDING;
+      currentStep > DemoProgress.LINK_LOAN
+        ? StepStatusStyle.DONE
+        : StepStatusStyle.PENDING;
 
-    this.stepOneDone = currentStep > 1;
-    this.stepTwoDone = currentStep > 2;
-    this.stepThreeDone = currentStep > 3;
+    this.stepOneDone = currentStep > DemoProgress.CREATE_BENEFICIARY;
+    this.stepTwoDone = currentStep > DemoProgress.LINK_LOAN;
+    this.stepThreeDone = currentStep > DemoProgress.CREATE_PAYMENT;
   }
 
   ngOnDestroy(): void {

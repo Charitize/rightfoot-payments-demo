@@ -3,9 +3,14 @@
 <mat-card class="form-card mat-typography">
   <app-header></app-header>
   <app-stepper></app-stepper>
-  <app-payment-form *ngIf="(isPaymentCreated$ | async) === false; else success"></app-payment-form>
 
-  <ng-template #success>
-    <app-payment-status></app-payment-status>
-  </ng-template>
+  <ng-container [ngSwitch]="currentStep$ | async">
+    <app-create-beneficiary *ngSwitchCase="DemoProgress.CREATE_BENEFICIARY"></app-create-beneficiary>
+
+    <app-link-loan *ngSwitchCase="DemoProgress.LINK_LOAN"></app-link-loan>
+
+    <app-create-payment *ngSwitchCase="DemoProgress.CREATE_PAYMENT"></app-create-payment>
+
+    <app-payment-status *ngSwitchCase="DemoProgress.CHECK_PAYMENT"></app-payment-status>
+  </ng-container>
 </mat-card>
