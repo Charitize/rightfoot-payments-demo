@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { StorageService } from '../storage.service';
+import { StorageService } from './storage.service';
 import { switchMap, take } from 'rxjs/operators';
-import { RightfootApiService } from '../rightfoot-api.service';
+import { RightfootApiService } from './rightfoot-api.service';
 
 /**
  * Styled component which is showing Status/Result of the payment via Plaid service.
