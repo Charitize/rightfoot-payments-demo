@@ -127,7 +127,6 @@ export class PaymentFormComponent implements OnInit {
         this.loading = false;
         this.form.enable();
         this.storageService.clearAll();
-        this.storageService.storeCurrentStep(DemoProgress.CREATE_BENEFICIARY);
         console.error(error);
         console.warn(
           'Something went wrong and the application state is cleared. ' +
@@ -153,17 +152,14 @@ export class PaymentFormComponent implements OnInit {
     ]).pipe(
       take(1),
       switchMap(([uuid, plaidToken]) => {
-        this.storageService.storeCurrentStep(DemoProgress.CREATE_PAYMENT);
         return this.getPaymentsEnabledStream(uuid, plaidToken);
       }),
       switchMap((paymentsEnabled) => {
         if (paymentsEnabled) {
-          const payment$ = this.storageService.beneficiaryId$.pipe(
+          return this.storageService.beneficiaryId$.pipe(
               switchMap(beneficiaryId =>
                   this.apiService.createPayment(
                       beneficiaryId, this.amount)));
-          this.storageService.storeCurrentStep(DemoProgress.CHECK_PAYMENT);
-          return payment$;
         }
         return throwError(
           'Payments are not enabled. ' +
@@ -193,7 +189,6 @@ export class PaymentFormComponent implements OnInit {
    * Returns cached plaid token if present or launches Plaid Link otherwise.
    */
   private getPlaidTokenStream(): Observable<string> {
-    this.storageService.storeCurrentStep(DemoProgress.LINK_LOAN);
     return this.plaidService
       .addPlaidLoan()
       .pipe(map((plaidResponse) => plaidResponse.token));

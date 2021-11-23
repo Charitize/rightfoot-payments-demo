@@ -1,7 +1,8 @@
 import { Beneficiary, Payment } from 'rightfoot-node/1-3/api';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { DemoProgress } from './demo-progress';
+import { map } from 'rxjs/operators';
 
 /**
  * This static service is used to store required data for requests.
@@ -16,7 +17,6 @@ export class StorageService {
   private static readonly PAYMENTS_ENABLED_KEY = 'p_e';
   private static readonly PAYMENT_UUID_KEY = 'p_u';
   private static readonly PAYMENT_RESPONSE = 'p_resp';
-  private static readonly CURRENT_STEP = 'current_step';
 
   private static readonly storage = window.sessionStorage;
 
@@ -62,14 +62,30 @@ export class StorageService {
   public paymentStatusResponse$: Observable<Payment> =
     this.paymentStatusResponseSubject.asObservable();
 
-  private currentStepSubject = new BehaviorSubject<DemoProgress>(
-      parseInt(StorageService.storage.getItem(StorageService.CURRENT_STEP), 10));
-
   /**
    * Returns stream with a currently stored current step.
    */
-  public currentStep$: Observable<DemoProgress> =
-      this.currentStepSubject.asObservable();
+  public currentStep$: Observable<DemoProgress> = combineLatest([
+    this.beneficiaryId$,
+    this.paymentsEnabled$,
+    this.paymentId$,
+  ]).pipe(
+    map(([beneficiaryId, paymentsEnabled, paymentId]) => {
+      if (!beneficiaryId) {
+        return DemoProgress.CREATE_BENEFICIARY;
+      }
+
+      if (!paymentsEnabled) {
+        return DemoProgress.LINK_LOAN;
+      }
+
+      if (!paymentId) {
+        return DemoProgress.CREATE_PAYMENT;
+      }
+
+      return DemoProgress.CHECK_PAYMENT;
+    })
+  );
 
   /**
    * Caches beneficiary's id in the session storage.
@@ -110,16 +126,6 @@ export class StorageService {
     StorageService.storage.setItem(
       StorageService.PAYMENT_RESPONSE,
       JSON.stringify(response));
-  }
-
-  /**
-   * Store current step.
-   */
-  public storeCurrentStep(currentStep: DemoProgress): void {
-    this.currentStepSubject.next(currentStep);
-    StorageService.storage.setItem(
-      StorageService.CURRENT_STEP,
-      currentStep.toString());
   }
 
   /**

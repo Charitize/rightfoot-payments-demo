@@ -93,7 +93,6 @@ export class RightfootApiService {
       tap(payment => {
         this.storageService.storePaymentId(payment.uuid);
         this.storageService.storePaymentResponse(payment);
-        this.storageService.storeCurrentStep(DemoProgress.CHECK_PAYMENT);
       })
     );
   }
