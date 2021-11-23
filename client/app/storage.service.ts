@@ -12,7 +12,7 @@ import { DemoProgress } from './demo-progress';
   providedIn: 'root',
 })
 export class StorageService {
-  private static readonly USER_ID_KEY = 'b_uuid';
+  private static readonly BENEFICIARY_ID_KEY = 'b_uuid';
   private static readonly PLAID_TOKEN_KEY = 'pl_t';
   private static readonly PAYMENTS_ENABLED_KEY = 'p_e';
   private static readonly PAYMENT_UUID_KEY = 'p_u';
@@ -40,19 +40,19 @@ export class StorageService {
   public storedCurrentStep$ = this.storedCurrentStepSubject.asObservable();
 
   /**
-   * Returns cached user id.
+   * Returns cached beneficiary id.
    */
-  public getStoredUserId(): string {
-    return StorageService.storage.getItem(StorageService.USER_ID_KEY);
+  public getStoredBeneficiaryId(): string {
+    return StorageService.storage.getItem(StorageService.BENEFICIARY_ID_KEY);
   }
 
   /**
-   * Caches user's id in the session storage.
+   * Caches beneficiary's id in the session storage.
    * @param beneficiary user to store id for.
    */
-  public storeUserId(beneficiary: Beneficiary): void {
+  public storeBeneficiaryId(beneficiary: Beneficiary): void {
     StorageService.storage.setItem(
-      StorageService.USER_ID_KEY,
+      StorageService.BENEFICIARY_ID_KEY,
       beneficiary.uuid
     );
   }
@@ -144,7 +144,7 @@ export class StorageService {
   /**
    * Returns stored current step.
    */
-  public getStoredCurrentStep(): DemoProgress {
+  private getStoredCurrentStep(): DemoProgress {
     return parseInt(StorageService.storage.getItem(StorageService.CURRENT_STEP), 10);
   }
 }
