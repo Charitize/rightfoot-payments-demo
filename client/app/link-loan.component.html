@@ -1,5 +1,5 @@
 <mat-card-content class="form-card__content">
-  <form>
+  <form (ngSubmit)="onSubmit($event)">
     <div class="loan-type-selector">
       <h2>Choose Loan Type</h2>
       <p>The loan you would like to send funds to</p>
@@ -32,9 +32,18 @@
       </mat-button-toggle-group>
     </div>
 
+    <div [class.hidden]="loanType.value !== loanTypes.CREDIT_CARD" class="vgs-container">
+      <div id="cc-holder" class="vgs-form-field"></div>
+      <div id="cc-number" class="vgs-form-field"></div>
+      <div class="vgs-form-field-group">
+        <div id="cc-expiration-date" class="vgs-form-field"></div>
+        <div id="cc-cvc" class="vgs-form-field"></div>
+      </div>
+    </div>
+
     <button
         type="submit"
-        (click)="onLaunchPlaidLink()"
+        [disabled]="isSubmitDisabled"
         mat-flat-button
         color="primary">
         <span *ngIf="!loading; else loader">

@@ -232,3 +232,44 @@
     }
   }
 }
+
+.hidden {
+  display: none;
+}
+
+.vgs {
+  &-container {
+    width: 100%;
+    max-width: 376px;
+    margin: 45px 0;
+
+    ::ng-deep {
+      iframe {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+  &-form-field {
+    border: 1.5px solid #E6E8EA;
+    height: 64px;
+    border-radius: 50px;
+    padding: 0 24px;
+    position: relative;
+    margin-bottom: 25px;
+    box-sizing: border-box;
+    transition: all .2s ease;
+
+    &-group {
+      display: flex;
+      flex-flow: wrap;
+
+      div {
+        flex: 0 0 calc(50% - 14px);
+        &:first-of-type {
+          margin-right: 28px;
+        }
+      }
+    }
+  }
+}
