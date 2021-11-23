@@ -13,7 +13,6 @@ import { DemoProgress } from './demo-progress';
 })
 export class StorageService {
   private static readonly BENEFICIARY_ID_KEY = 'b_uuid';
-  private static readonly PLAID_TOKEN_KEY = 'pl_t';
   private static readonly PAYMENTS_ENABLED_KEY = 'p_e';
   private static readonly PAYMENT_UUID_KEY = 'p_u';
   private static readonly PAYMENT_RESPONSE = 'p_resp';
@@ -55,21 +54,6 @@ export class StorageService {
       StorageService.BENEFICIARY_ID_KEY,
       beneficiary.uuid
     );
-  }
-
-  /**
-   * Caches token received from Plaid.
-   * @param token Public token obtained from Plaid using Rightfoot's Plaid public key.
-   */
-  public storePlaidToken(token: string): void {
-    StorageService.storage.setItem(StorageService.PLAID_TOKEN_KEY, token);
-  }
-
-  /**
-   * Returns cached plaid token.
-   */
-  public getStoredPlaidToken(): string {
-    return StorageService.storage.getItem(StorageService.PLAID_TOKEN_KEY);
   }
 
   /**

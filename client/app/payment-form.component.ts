@@ -185,13 +185,9 @@ export class PaymentFormComponent implements OnInit {
    */
   private getPlaidTokenStream(): Observable<string> {
     this.storageService.storeCurrentStep(DemoProgress.LINK_LOAN);
-    const storedToken = this.storageService.getStoredPlaidToken();
-    if (!storedToken) {
-      return this.plaidService
-        .addPlaidLoan()
-        .pipe(map((plaidResponse) => plaidResponse.token));
-    }
-    return of(storedToken);
+    return this.plaidService
+      .addPlaidLoan()
+      .pipe(map((plaidResponse) => plaidResponse.token));
   }
 
   /**
