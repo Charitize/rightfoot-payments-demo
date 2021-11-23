@@ -1,4 +1,4 @@
-import { Beneficiary } from 'rightfoot-node/1-3/api';
+import { Beneficiary, Payment } from 'rightfoot-node/1-3/api';
 import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { DemoProgress } from './demo-progress';
@@ -117,17 +117,17 @@ export class StorageService {
   }
 
   /**
-   * Store full response from Plaid.
+   * Store full Rightfoot payment creation response.
    */
-  public storeResponse(response: string): void {
-    StorageService.storage.setItem(StorageService.PAYMENT_RESPONSE, response);
+  public storePaymentResponse(response: Payment): void {
+    StorageService.storage.setItem(StorageService.PAYMENT_RESPONSE, JSON.stringify(response));
   }
 
   /**
-   * Returns stored response.
+   * Returns stored Payment status response.
    */
-  public getStoredPlaidResponse(): string {
-    return StorageService.storage.getItem(StorageService.PAYMENT_RESPONSE);
+  public getStoredPaymentResponse(): Payment {
+    return JSON.parse(StorageService.storage.getItem(StorageService.PAYMENT_RESPONSE));
   }
 
   /**

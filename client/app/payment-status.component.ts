@@ -22,7 +22,7 @@ export class PaymentStatusComponent {
     private storageService: StorageService
   ) {
     this.statusResponse = JSON.stringify(
-      JSON.parse(this.storageService.getStoredPlaidResponse()),
+      this.storageService.getStoredPaymentResponse(),
       null,
       2
     );
