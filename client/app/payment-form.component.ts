@@ -60,7 +60,9 @@ export class PaymentFormComponent implements OnInit {
   /**
    * Exposing this value to dynamically show/hide demographics related template.
    */
-  public isDemographicsInfoProvided = !!this.storageService.getStoredBeneficiaryId();
+  public isDemographicsInfoProvided$: Observable<boolean> =
+      this.storageService.beneficiaryId$.pipe(
+          map(beneficiaryId => !!beneficiaryId));
 
   /** To show a loader. */
   public loading = false;
@@ -93,12 +95,16 @@ export class PaymentFormComponent implements OnInit {
 
   ngOnInit() {
     // We add demographics related fields dynamically if they are not provided yet.
-    if (!this.isDemographicsInfoProvided) {
-      this.form.addControl(
-        'demographics',
-        PaymentFormComponent.initializeDemographicsFormGroup()
-      );
-    }
+    this.isDemographicsInfoProvided$.subscribe(
+      (isDemographicsInfoProvided) => {
+        if (!isDemographicsInfoProvided) {
+          this.form.addControl(
+            'demographics',
+            PaymentFormComponent.initializeDemographicsFormGroup()
+          );
+        }
+      }
+    );
   }
 
   /**
@@ -142,7 +148,7 @@ export class PaymentFormComponent implements OnInit {
    */
   private createPayment(): Observable<Payment> {
     return combineLatest([
-      this.getUserIdStream(),
+      this.getBeneficiaryIdStream(),
       this.getPlaidTokenStream(),
     ]).pipe(
       take(1),
@@ -152,10 +158,10 @@ export class PaymentFormComponent implements OnInit {
       }),
       switchMap((paymentsEnabled) => {
         if (paymentsEnabled) {
-          const payment$ = this.apiService.createPayment(
-            this.storageService.getStoredBeneficiaryId(),
-            this.amount
-          );
+          const payment$ = this.storageService.beneficiaryId$.pipe(
+              switchMap(beneficiaryId =>
+                  this.apiService.createPayment(
+                      beneficiaryId, this.amount)));
           this.storageService.storeCurrentStep(DemoProgress.CHECK_PAYMENT);
           return payment$;
         }
@@ -170,14 +176,17 @@ export class PaymentFormComponent implements OnInit {
   /**
    * Returns cached user id if present or performs create beneficiary request otherwise.
    */
-  private getUserIdStream(): Observable<string> {
-    const storedUserId = this.storageService.getStoredBeneficiaryId();
-    if (!storedUserId) {
-      return this.apiService
-        .createBeneficiary(this.demographicsFormValue)
-        .pipe(map((beneficiary) => beneficiary.uuid));
-    }
-    return of(storedUserId);
+  private getBeneficiaryIdStream(): Observable<string> {
+    return this.storageService.beneficiaryId$.pipe(
+      switchMap(beneficiaryId => {
+        if (beneficiaryId === null) {
+          return this.apiService
+            .createBeneficiary(this.demographicsFormValue)
+            .pipe(map((beneficiary) => beneficiary.uuid));
+        }
+        return of(beneficiaryId);
+      })
+    );
   }
 
   /**
@@ -199,15 +208,18 @@ export class PaymentFormComponent implements OnInit {
     beneficiaryUuid: string,
     token: string
   ): Observable<boolean> {
-    const storedPaymentsEnabled = this.storageService.getStoredPaymentsEnabled();
-    // If stored payments is null it means it wasn't set yet
-    // so addPlaidToken request hasn't been performed yet.
-    if (storedPaymentsEnabled === null) {
-      return this.apiService
-        .addPlaidToken(beneficiaryUuid, token)
-        .pipe(map((beneficiary) => beneficiary.paymentsEnabled));
-    }
-    return of(storedPaymentsEnabled);
+    return this.storageService.paymentsEnabled$.pipe(
+      switchMap(paymentsEnabled => {
+        // If stored payments is null it means it wasn't set yet
+        // so addPlaidToken request hasn't been performed yet.
+        if (paymentsEnabled === null) {
+          return this.apiService
+            .addPlaidToken(beneficiaryUuid, token)
+            .pipe(map((beneficiary) => beneficiary.paymentsEnabled));
+        }
+        return of(paymentsEnabled);
+      })
+    );
   }
 
   /**

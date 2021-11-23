@@ -1,7 +1,7 @@
 <mat-card-content class="form-card__content">
   <form (ngSubmit)="onSubmit()" [formGroup]="form">
     <!--   Form group for collecting demographics information.   -->
-    <ng-container *ngIf="!isDemographicsInfoProvided">
+    <ng-container *ngIf="(isDemographicsInfoProvided$ | async) === false">
       <h2 class="mat-title">
         Beneficiary Billing Information
       </h2>

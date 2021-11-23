@@ -91,7 +91,7 @@ export class RightfootApiService {
     return this.httpClient.post<CreatePaymentResponse>(RightfootApiService.PAYMENTS_URL, request).pipe(
       map(response => response.payment),
       tap(payment => {
-        this.storageService.storePaymentUuid(payment.uuid);
+        this.storageService.storePaymentId(payment.uuid);
         this.storageService.storePaymentResponse(payment);
         this.storageService.storeCurrentStep(DemoProgress.CHECK_PAYMENT);
       })

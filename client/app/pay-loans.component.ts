@@ -20,7 +20,7 @@ export class PayLoansComponent {
    * @link PaymentSuccessComponent
    * @link PaymentFormComponent
    */
-  public isPaymentCreated$ = this.storageService.storedPaymentUuid$.pipe(
+  public isPaymentCreated$ = this.storageService.paymentId$.pipe(
     map(id => !!id),
     tap(() => {
       // Fixes bug on mobile, when scroll didn't work after receiving token from plaid.
