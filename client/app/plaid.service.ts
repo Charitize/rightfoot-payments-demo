@@ -65,7 +65,6 @@ export class PlaidService {
   public addPlaidLoan(): Observable<PlaidOnSuccessArgs> {
     return this.handlePlaidLoan(this.config).pipe(
       map(plaidLinkResponse => {
-        this.storageService.storePlaidToken(plaidLinkResponse.token);
         return plaidLinkResponse;
       })
     );
