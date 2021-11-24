@@ -18,6 +18,9 @@ export class ApiRouter {
     /** Connects Plaid Public Token with a beneficiary. */
     this._router.post('/beneficiaries/addPlaidToken', (req, resp) => routeHander.addPlaidToken(req, resp));
 
+    /** Connects Credit Card with a beneficiary. */
+    this._router.post('/beneficiaries/:uuid/loans/creditCard', (req, resp) => routeHander.addCreditCard(req, resp));
+
     /**
      * Issues a request to transfer funds from the funding source to the
      * beneficiary's loan account.

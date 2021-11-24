@@ -1,11 +1,12 @@
 import {
+  AddCreditCardToBeneficiaryRequest, AddCreditCardToBeneficiaryResponse,
   AddPlaidTokenToBeneficiaryRequest,
   AddPlaidTokenToBeneficiaryResponse, Beneficiary,
   CreateBeneficiaryRequest,
   CreateBeneficiaryResponse,
   CreatePaymentRequest,
   CreatePaymentResponse,
-  Payment,
+  Loan,
   RightfootApi
 } from 'rightfoot-node/1-3/api';
 
@@ -57,6 +58,26 @@ export class ApiRouteHandlers {
     } catch (err) {
       console.error(err);
       res.status(500).send('Error adding Plaid token to Beneficiary.');
+    }
+  }
+
+  /**
+   * Associates `Loan`s with a `Beneficiary` with credit card information.
+   *
+   * @param req Application server request with the credit card info.
+   * @param res Response with the created `Loan`.
+   */
+  public async addCreditCard(
+    req: Request<AddCreditCardToBeneficiaryRequest>,
+    res: Response<Loan>) {
+    try {
+      const addCreditCardToBeneficiaryRequest: AddCreditCardToBeneficiaryRequest = req.body;
+      const addCreditCardToBeneficiaryResponse: AddCreditCardToBeneficiaryResponse =
+        await this.service.addCreditCardToBeneficiary(addCreditCardToBeneficiaryRequest, req.params.uuid);
+      res.send(addCreditCardToBeneficiaryResponse);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error adding credit card to Beneficiary.');
     }
   }
 
