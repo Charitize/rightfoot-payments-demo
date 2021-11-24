@@ -1,0 +1,132 @@
+<mat-card-content class="form-card__content">
+  <form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <!--   Form group for collecting demographics information.   -->
+    <h2 class="mat-title">
+      Beneficiary Billing Information
+    </h2>
+    <h3 class="mat-subtitle">
+      A few things about the person benefiting from this payment
+    </h3>
+    <button id="fill-example-data" mat-flat-button (click)="fillExampleData()" type="button">Fill with example data
+    </button>
+
+    <div class="form-group-container">
+      <mat-form-field>
+        <mat-label>First Name</mat-label>
+        <input
+            matInput
+            formControlName="firstName"
+            placeholder="John"
+            required
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Last Name</mat-label>
+        <input
+            matInput
+            formControlName="lastName"
+            placeholder="Doe"
+            required
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Phone Number</mat-label>
+        <input
+            matInput
+            formControlName="phoneNumber"
+            placeholder="+14151234567"
+            required
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Birthday</mat-label>
+        <input
+            matInput
+            placeholder="12/31/2001"
+            [matDatepicker]="datepicker"
+            formControlName="dateOfBirth"
+            required>
+        <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+        <mat-datepicker #datepicker startView="multi-year"></mat-datepicker>
+      </mat-form-field>
+
+      <div formGroupName="mailingAddress" class="form-group-container">
+        <mat-form-field>
+          <mat-label>Street Address</mat-label>
+          <input
+              matInput
+              placeholder="1600 Pennsylvania Avenue"
+              formControlName="line1"
+              required
+          >
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Street Address Line 2</mat-label>
+          <input
+              matInput
+              placeholder="Apartment 3"
+              formControlName="line2"
+          >
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>City</mat-label>
+          <input
+              matInput
+              placeholder="Washington"
+              formControlName="city"
+              required
+          >
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>State</mat-label>
+          <mat-select
+              formControlName="state"
+              class="mat-select-field"
+              required
+          >
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let state of states"
+                        [value]="state.ansi">
+              {{state.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Zip Code</mat-label>
+          <input
+              matInput
+              placeholder="20001"
+              formControlName="zipCode"
+              required
+          >
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="submit-container">
+      <button
+          type="submit"
+          [disabled]="!form.valid"
+          mat-flat-button
+          color="primary">
+      <ng-container *ngIf="!loading; else loader">
+        <span>Submit</span>
+        <mat-icon>east</mat-icon>
+      </ng-container>
+        <ng-template #loader>
+          <mat-progress-spinner mode="indeterminate" [diameter]="26"></mat-progress-spinner>
+        </ng-template>
+      </button>
+      <div *ngIf="!form.valid && form.touched && form.enabled" class="mat-caption">
+        Please fill all required fields.
+        <div>
+          Required fields are marked with *.
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-card-content>

@@ -1,0 +1,14 @@
+<div class="status-form">
+  <button mat-flat-button
+          color="primary" (click)="checkStatus()">
+    Check Status
+  </button>
+
+  <app-payment-status-panel [payment]="payment$ | async"></app-payment-status-panel>
+
+  <mat-label class="status-title">
+    View response from the API.
+  </mat-label>
+
+  <pre class="status-response">{{ statusResponse$ | async }} </pre>
+</div>

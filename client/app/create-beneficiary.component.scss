@@ -1,0 +1,171 @@
+::ng-deep {
+  .mat-form-field-underline {
+    display: none;
+  }
+
+  .mat-form-field-label {
+    font-family: Inter, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 17px;
+    color: #9da1aa;
+  }
+
+  .mat-focused .mat-form-field-label {
+    font-family: Inter, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    color: #a09cb5;
+  }
+
+  .mat-form-field-wrapper {
+    padding: 1px 8px 8px 24px;
+  }
+
+  mat-datepicker-toggle > .mat-focus-indicator.mat-icon-button.mat-button-base {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #e0dbf9;
+  }
+
+  .mat-select-arrow-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #e0dbf9;
+    transform: translateY(-15px);
+
+    .mat-select-arrow {
+      margin: 0 19px;
+    }
+  }
+
+  .mat-form-field-type-mat-input .mat-form-field-infix,
+  .mat-form-field-type-mat-select .mat-form-field-infix {
+    border: 0;
+    margin-top: 14px;
+  }
+}
+
+.form-card {
+  &__content {
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
+      .form-group-container {
+        width: 100%;
+      }
+
+      .mat-subtitle {
+        margin: 5px 0 0;
+        color: #59537b;
+        font-family: Lexend Deca, sans-serif;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: normal;
+        line-height: 21px;
+      }
+
+      .mat-form-field {
+        font-family: Inter, sans-serif;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 17px;
+        color: #59537b;
+      }
+    }
+
+    .mat-form-field-type-mat-input,
+    .mat-form-field-type-mat-select {
+      width: 48%;
+      height: 64px;
+      border: 1px solid #e6e8ea;
+      box-sizing: border-box;
+      border-radius: 100px;
+      margin-top: 32px;
+
+      div.mat-form-field-wrapper {
+        padding: 10px;
+      }
+
+      @media screen and (max-width: 600px) {
+        width: 100%;
+      }
+    }
+
+    .mat-form-field-wrapper {
+      padding: 10px;
+    }
+
+    .form-group-container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .mat-caption {
+      text-align: center;
+      margin-top: 0.5em;
+      font-size: 0.8em;
+    }
+
+    .mat-title {
+      margin-top: 48px;
+    }
+
+    .submit-container {
+      text-align: center;
+      width: 220px;
+      margin-top: 48px;
+    }
+
+    button[type="submit"] {
+      $height: 56px;
+      display: flex;
+      justify-content: center;
+      width: 220px;
+      height: $height;
+      padding: 0 24px;
+      border-radius: $height / 2;
+
+      &:not([disabled]) {
+        background-color: #624de3;
+      }
+
+      mat-icon {
+        vertical-align: middle;
+      }
+
+      ::ng-deep .mat-button-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    #fill-example-data {
+      padding: 10px 16px;
+      width: 202px;
+      height: 40px;
+      background: #624de3;
+      border-radius: 8px;
+      color: white;
+      text-align: center;
+      font-family: Inter, sans-serif;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 20px;
+      margin-left: auto;
+      margin-top: 24px;
+    }
+  }
+}

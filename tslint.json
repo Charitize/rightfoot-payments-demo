@@ -135,6 +135,7 @@
       "options": [
         "ban-keywords",
         "check-format",
+        "allow-leading-underscore",
         "allow-pascal-case"
       ]
     },
@@ -142,6 +143,7 @@
       "options": [
         "check-branch",
         "check-decl",
+        "check-module",
         "check-operator",
         "check-separator",
         "check-type",

@@ -1,0 +1,43 @@
+<mat-card-content class="form-card__content">
+  <form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <h2 class="mat-title">
+      Payment Amount
+    </h2>
+    <h3 class="mat-subtitle">
+      This much will be withdrawn from the app's funding source and sent to
+      selected loan
+    </h3>
+    <mat-form-field>
+      <mat-label>Payment Amount</mat-label>
+      <input
+          matInput
+          formControlName="amount"
+          type="number"
+          placeholder="1.23"
+          required
+      >
+    </mat-form-field>
+
+    <div class="submit-container">
+      <button
+          type="submit"
+          [disabled]="!form.valid"
+          mat-flat-button
+          color="primary">
+      <ng-container *ngIf="!loading; else loader">
+        <span>Create Payment</span>
+        <mat-icon>east</mat-icon>
+      </ng-container>
+        <ng-template #loader>
+          <mat-progress-spinner mode="indeterminate" [diameter]="26"></mat-progress-spinner>
+        </ng-template>
+      </button>
+      <div *ngIf="!form.valid && form.touched && form.enabled" class="mat-caption">
+        Please fill all required fields.
+        <div>
+          Required fields are marked with *.
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-card-content>

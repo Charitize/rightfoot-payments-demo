@@ -1,0 +1,127 @@
+.stepper-container {
+  width: 100%;
+  margin-top: 40px;
+  margin-bottom: 8px;
+
+  .stepper-line {
+    display: flex;
+    justify-content: space-between;
+
+    mat-label {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      font-family: Inter, sans-serif;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: bold;
+      line-height: 17px;
+    }
+
+    mat-label,
+    mat-icon,
+    div {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+    }
+
+    mat-icon {
+      display: flex;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    span {
+      width: 100%;
+      height: 4px;
+      margin-top: 22px;
+      margin-right: 32px;
+      margin-left: 32px;
+
+      &.done {
+        background-color: #1a764f;
+      }
+
+      &.active,
+      &.pending {
+        background-color: #e6e8ea;
+      }
+
+      @media screen and (max-width: 600px) {
+        margin-top: 22px;
+        margin-right: 8px;
+        margin-left: 8px;
+      }
+    }
+
+    .active {
+      mat-label {
+        box-shadow: 0 14px 24px rgba(24, 14, 88, 0.15);
+        background-color: white;
+      }
+    }
+
+    .pending {
+      mat-label {
+        background-color: #e0dbf9;
+        color: #6155af;
+      }
+    }
+
+    .done {
+      mat-label {
+        background-color: #d4f0e4;
+        color: #1a764f;
+      }
+    }
+  }
+
+  .stepper-title {
+    display: flex;
+    justify-content: space-between;
+
+    mat-label {
+      width: 150px;
+      height: 17px;
+      font-family: Inter, sans-serif;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: bold;
+      line-height: 17px;
+      margin-top: 16px;
+
+      &:nth-child(even) {
+        text-align: center;
+        margin-left: 8px;
+        margin-right: 8px;
+      }
+    }
+
+    mat-label:nth-child(1) {
+      text-align: left;
+    }
+
+    mat-label:nth-child(2) {
+      text-align: center;
+    }
+
+    mat-label:nth-child(3) {
+      text-align: right;
+    }
+
+    .active,
+    .pending {
+      color: #59537b;
+    }
+
+    .done {
+      color: #dedde5;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    display: none;
+  }
+}
