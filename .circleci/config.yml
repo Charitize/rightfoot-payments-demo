@@ -16,8 +16,7 @@ commands:
         type: string
 
     steps:
-      - attach_workspace:
-          at: /tmp/workspace
+      - gcp-gke/install
 
       - run:
           name: Authenticate Google Cloud.
@@ -27,9 +26,6 @@ commands:
             gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
             gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}
             gcloud auth configure-docker
-
-      # Configure and setup docker.
-      - setup_remote_docker
 
       - gcp-gcr/gcr-auth:
           gcloud-service-key: GCLOUD_SERVICE_KEY
@@ -173,13 +169,16 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
 
+      - setup_remote_docker:
+          version: 19.03.13
+
       - push-image:
           dockerfile: Dockerfile.client
           image: rightfoot-payments-demo
 
   push-server-image:
     docker:
-      - image: google/cloud-sdk
+      - image: circleci/node:12-browsers
 
     working_directory: /tmp/workspace
 
