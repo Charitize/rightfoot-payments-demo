@@ -4,6 +4,8 @@ import { formatDate } from '@angular/common';
 
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import {
+  AddCreditCardToBeneficiaryRequest,
+  AddCreditCardToBeneficiaryResponse,
   AddPlaidTokenToBeneficiaryRequest,
   AddPlaidTokenToBeneficiaryResponse,
   Beneficiary,
@@ -11,6 +13,7 @@ import {
   CreateBeneficiaryResponse,
   CreatePaymentRequest,
   CreatePaymentResponse,
+  Loan,
   Payment
 } from 'rightfoot-node/1-3/api';
 import { Observable } from 'rxjs';
@@ -73,6 +76,15 @@ export class RightfootApiService {
 
     return this.httpClient.post<AddPlaidTokenToBeneficiaryResponse>(RightfootApiService.ADD_PLAID_TOKEN_URL, request).pipe(
       map(response => response.beneficiary),
+      tap(() => this.storageService.storePaymentsEnabled(true))
+    );
+  }
+
+  /** Connects credit card with a beneficiary. */
+  public addCreditCard(beneficiaryUuid: string, request: AddCreditCardToBeneficiaryRequest): Observable<Loan> {
+    return this.httpClient.post<AddCreditCardToBeneficiaryResponse>(
+        `${RightfootApiService.CREATE_BENEFICIARY_URL}/${beneficiaryUuid}/loans/creditCard`, request).pipe(
+      map(response => response.loan),
       tap(() => this.storageService.storePaymentsEnabled(true))
     );
   }
