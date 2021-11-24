@@ -120,14 +120,19 @@
       margin-top: 48px;
     }
 
+    .submit-container {
+      text-align: center;
+      width: 220px;
+      margin-top: 48px;
+    }
+
     button[type="submit"] {
       $height: 56px;
       display: flex;
       justify-content: center;
       width: 220px;
       height: $height;
-      padding: 9px;
-      margin: 56px auto 0;
+      padding: 0 24px;
       border-radius: $height / 2;
 
       &:not([disabled]) {
@@ -135,9 +140,15 @@
       }
 
       mat-icon {
-        margin-left: 45px;
-        margin-top: -5px;
         vertical-align: middle;
+      }
+
+      ::ng-deep .mat-button-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
       }
     }
 

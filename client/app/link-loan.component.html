@@ -41,18 +41,20 @@
       </div>
     </div>
 
-    <button
-        type="submit"
-        [disabled]="isSubmitDisabled"
-        mat-flat-button
-        color="primary">
-        <span *ngIf="!loading; else loader">
+    <div class="submit-container">
+      <button
+          type="submit"
+          [disabled]="isSubmitDisabled"
+          mat-flat-button
+          color="primary">
+        <ng-container *ngIf="!loading; else loader">
           <span>Link Loan</span>
           <mat-icon>east</mat-icon>
-        </span>
-      <ng-template #loader>
-        <mat-progress-spinner mode="indeterminate" [diameter]="26"></mat-progress-spinner>
-      </ng-template>
-    </button>
+        </ng-container>
+        <ng-template #loader>
+          <mat-progress-spinner mode="indeterminate" [diameter]="26"></mat-progress-spinner>
+        </ng-template>
+      </button>
+    </div>
   </form>
 </mat-card-content>
