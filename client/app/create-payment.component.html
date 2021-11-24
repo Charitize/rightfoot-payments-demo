@@ -18,23 +18,25 @@
       >
     </mat-form-field>
 
-    <button
-        type="submit"
-        [disabled]="!form.valid"
-        mat-flat-button
-        color="primary">
-      <span *ngIf="!loading; else loader">
+    <div class="submit-container">
+      <button
+          type="submit"
+          [disabled]="!form.valid"
+          mat-flat-button
+          color="primary">
+      <ng-container *ngIf="!loading; else loader">
         <span>Create Payment</span>
         <mat-icon>east</mat-icon>
-      </span>
-      <ng-template #loader>
-        <mat-progress-spinner mode="indeterminate" [diameter]="26"></mat-progress-spinner>
-      </ng-template>
-    </button>
-    <div *ngIf="!form.valid && form.touched && form.enabled" class="mat-caption">
-      Please fill all required fields.
-      <div>
-        Required fields are marked with *.
+      </ng-container>
+        <ng-template #loader>
+          <mat-progress-spinner mode="indeterminate" [diameter]="26"></mat-progress-spinner>
+        </ng-template>
+      </button>
+      <div *ngIf="!form.valid && form.touched && form.enabled" class="mat-caption">
+        Please fill all required fields.
+        <div>
+          Required fields are marked with *.
+        </div>
       </div>
     </div>
   </form>
