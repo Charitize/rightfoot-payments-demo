@@ -28,6 +28,8 @@ import { StepperComponent } from './stepper.component';
 import { SuccessCheckComponent } from './success-check.component';
 import { LinkLoanComponent } from './link-loan.component';
 import { CreatePaymentComponent } from './create-payment.component';
+import { PaymentStatusPanelComponent } from './payment-status-panel.component';
+import { IsoDatePipe } from './iso-date.pipe';
 
 /** Primary entry point for the entire application. */
 @NgModule({
@@ -42,6 +44,8 @@ import { CreatePaymentComponent } from './create-payment.component';
     PaymentStatusComponent,
     StepperComponent,
     SuccessCheckComponent,
+    PaymentStatusPanelComponent,
+    IsoDatePipe,
   ],
   imports: [
     BrowserModule,

@@ -4,6 +4,8 @@
     Check Status
   </button>
 
+  <app-payment-status-panel [payment]="payment$ | async"></app-payment-status-panel>
+
   <mat-label class="status-title">
     View response from the API.
   </mat-label>

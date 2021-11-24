@@ -14,11 +14,14 @@ import { Payment } from 'rightfoot-node/1-3/api';
   styleUrls: ['./payment-status.component.scss'],
 })
 export class PaymentStatusComponent {
+  /** To render payment status panel. */
+  public payment$ = this.storageService.paymentStatusResponse$;
+
   /**
    * Payment status response binding.
    */
   public statusResponse$: Observable<string> =
-      this.storageService.paymentStatusResponse$.pipe(
+      this.payment$.pipe(
         map((payment: Payment) => {
           return JSON.stringify(
             payment,

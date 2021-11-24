@@ -1,0 +1,61 @@
+.status-panel {
+  border-radius: 25px;
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  font-family: Inter, sans-serif;
+
+  &--completed, &--accepted {
+    background: #D9EFE5;
+
+    .status-panel__details {
+      color: #397352;
+    }
+  }
+
+  &--pending {
+    background: #DCECF9;
+
+    .status-panel__details {
+      color: #004CBF;
+    }
+  }
+
+  &--returned, &--failed {
+    background: #F9DCDC;
+
+    .status-panel__details {
+      color: #BF0000;
+    }
+  }
+
+  &__title {
+    font-weight: bold;
+    font-size: 19px;
+    line-height: 23px;
+    color: #212121;
+    margin-left: 14px;
+  }
+
+  &__details {
+    display: flex;
+    margin-left: auto;
+    line-height: 17px;
+  }
+
+  .key-value {
+    &:not(:last-of-type) {
+      margin-right: 16px;
+    }
+
+    &__key {
+      font-weight: 700;
+    }
+
+    &__value {
+      &--currency {
+        text-align: right;
+      }
+    }
+  }
+}
