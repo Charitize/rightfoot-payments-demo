@@ -83,9 +83,28 @@ export class LinkLoanComponent implements AfterViewInit {
   }
 
   private submitToVgs() {
+    this.loading = true;
     this.vgsForm.submit('/post', {}, (status, response) => {
       console.log(status, response);
-      // TODO: Code to send the info to Rightfoot's API.
+      this.storageService.beneficiaryId$.pipe(
+        switchMap(beneficiaryId => {
+          const deserialized = JSON.parse(response.data);
+          return this.apiService.addCreditCard(
+            beneficiaryId,
+            { accountNumber: deserialized.card_number }
+          );
+        })
+      ).subscribe(
+        () => {
+          this.loading = false;
+        },
+        (err) => {
+          console.error('An unexpected error occurred.', err);
+        },
+        ()  => {
+          this.loading = false;
+        },
+      );
     }, (error) => {
       console.error('An unexpected error occurred.', error);
     });
