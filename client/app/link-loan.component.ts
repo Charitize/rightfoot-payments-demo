@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -6,6 +6,12 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { RightfootApiService } from './rightfoot-api.service';
 import { StorageService } from './storage.service';
 import { PlaidService } from './plaid.service';
+import { FormControl, FormGroup } from '@angular/forms';
+
+enum LoanTypes {
+  CREDIT_CARD = 'creditCard',
+  STUDENT_LOAN = 'studentLoan'
+}
 
 /**
  * This component provides a form with a payment amount input and a "Pay" button.
@@ -17,7 +23,7 @@ import { PlaidService } from './plaid.service';
   templateUrl: './link-loan.component.html',
   styleUrls: ['./link-loan.component.scss'],
 })
-export class LinkLoanComponent implements OnInit {
+export class LinkLoanComponent {
   constructor(
     private apiService: RightfootApiService,
     private plaidService: PlaidService,
@@ -27,8 +33,15 @@ export class LinkLoanComponent implements OnInit {
   /** To show a loader. */
   public loading = false;
 
-  ngOnInit() {
-    this.onLaunchPlaidLink();
+  /** To provide values for the selector. */
+  public loanTypes = LoanTypes;
+
+  public form = new FormGroup({
+    loanType: new FormControl(null)
+  });
+
+  public get loanType(): FormControl {
+    return this.form.get('loanType') as FormControl;
   }
 
   public onLaunchPlaidLink() {

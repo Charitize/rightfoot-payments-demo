@@ -13,6 +13,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { NgxPlaidLinkModule } from 'ngx-plaid-link';
 
@@ -58,7 +59,8 @@ import { CreatePaymentComponent } from './create-payment.component';
     ReactiveFormsModule,
     FormsModule,
     NgxPlaidLinkModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonToggleModule,
   ],
   providers: [
     {

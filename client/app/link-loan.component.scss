@@ -3,6 +3,80 @@
     display: none;
   }
 
+  .loan-type-selector {
+    margin-top: 40px;
+
+    h2 {
+      margin-bottom: 21px;
+    }
+
+    p {
+      margin-bottom: 50px;
+    }
+
+    mat-button-toggle-group {
+      border: none;
+      mat-button-toggle {
+        border-radius: 25px;
+        border-width: 0;
+
+        &:not(:last-of-type) {
+          margin-right: 29px;
+        }
+
+        ::ng-deep {
+          button {
+            width: 231px;
+            height: 105px;
+            border-radius: 25px;
+            border: 2px solid #E6E8EA;
+            color: #8E8B9F;
+            transition: all .2s ease;
+
+            .mat-button-toggle-label-content {
+              line-height: 17px;
+
+              svg {
+                display: block;
+                margin: 0 auto 8px;
+
+                path {
+                  transition: fill .2s ease;
+                }
+              }
+
+              span {
+                font-family: Inter, sans-serif;
+                font-weight: 700;
+                font-size: 14px;
+                line-height: 17px;
+              }
+            }
+          }
+
+          .mat-ripple.mat-button-toggle-ripple {
+            border-radius: 25px;
+          }
+        }
+
+        &.mat-button-toggle-checked {
+          background-color: transparent;
+
+          ::ng-deep {
+            button {
+              border-color: #5C53DB;
+              color: #5C53DB;
+
+              svg path {
+                fill: #5C53DB;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   .mat-form-field-label {
     font-family: Inter, sans-serif;
     font-style: normal;
