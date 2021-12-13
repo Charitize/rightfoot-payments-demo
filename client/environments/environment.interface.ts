@@ -18,8 +18,13 @@ export interface Environment {
    * requests.
    */
   personalApiKey: string;
-}
 
+  /**
+   * The vault ID used by VGS Collect (the UI element used to capture credit card
+   * numbers).
+   */
+  vgs: VGSConfiguration;
+}
 
 /**
  * Plaid supports more deployment environments, but in this app we will use only sandbox.
@@ -30,6 +35,7 @@ export enum PlaidEnvironment {
    * mocked environment.
    */
   SANDBOX = 'sandbox',
+  PRODUCTION = 'production',
 }
 
 /**
@@ -41,4 +47,23 @@ export interface PlaidConfiguration {
 
   /** Public Key to identify thi platform. */
   publicKey: string;
+}
+
+/**
+ * Use only the sandbox environment for testing.
+ */
+export enum VGSEnvironment {
+  SANDBOX = 'sandbox',
+  PRODUCTION = 'production'
+}
+
+/**
+ * Configuration for the VGS vault being used with VGS Collect.
+ */
+export interface VGSConfiguration {
+  /** ID that indicates which VGS vault to use for credit card tokenization. */
+  vaultId: string;
+
+  /** The VGS environment being used for credit card tokenization. */
+  environment: VGSEnvironment;
 }

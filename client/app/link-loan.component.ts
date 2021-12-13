@@ -6,6 +6,7 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { RightfootApiService } from './rightfoot-api.service';
 import { StorageService } from './storage.service';
 import { PlaidService } from './plaid.service';
+import { environment } from '../environments/environment';
 import { FormControl, FormGroup } from '@angular/forms';
 import { loadVGSCollect } from '@vgs/collect-js';
 
@@ -91,7 +92,7 @@ export class LinkLoanComponent implements AfterViewInit {
           const deserialized = JSON.parse(response.data);
           return this.apiService.addCreditCard(
             beneficiaryId,
-            { accountNumber: deserialized.card_number }
+            { accountNumber: deserialized.accountNumber }
           );
         })
       ).subscribe(
@@ -148,8 +149,8 @@ export class LinkLoanComponent implements AfterViewInit {
 
   private async initializeVgsCollectForm() {
     const collect = await loadVGSCollect({
-      vaultId: 'tnty9bkue1i',
-      environment: 'sandbox',
+      vaultId: environment.vgs.vaultId,
+      environment: environment.vgs.environment,
       version: '2.11.0'
     }).catch((e) => console.error(e));
     // @ts-ignore
@@ -191,7 +192,7 @@ export class LinkLoanComponent implements AfterViewInit {
 
     const ccNumber = this.vgsForm.field('#cc-number', {
       type: 'card-number',
-      name: 'card_number',
+      name: 'accountNumber',
       successColor: '#4F8A10',
       errorColor: '#f44336',
       placeholder: 'Card Number',

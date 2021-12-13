@@ -2,7 +2,7 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { Environment, PlaidEnvironment } from './environment.interface';
+import { Environment, PlaidEnvironment, VGSEnvironment } from './environment.interface';
 
 export const environment: Environment = {
   production: false,
@@ -11,7 +11,11 @@ export const environment: Environment = {
     environment: PlaidEnvironment.SANDBOX,
     publicKey: '1773c898604f2bd4d68ecbbc8504f9'
   },
-  personalApiKey: 'SANDBOX-ea6dba36ce97d30b4593afb7785d7b1c301a461771eb1acc9e4e9ad413eaf41e91f5ce44649185b7e47eba3fc98bfaa5d51dd4b8c13c90b1368457c63399e574'
+  personalApiKey: 'SANDBOX-ea6dba36ce97d30b4593afb7785d7b1c301a461771eb1acc9e4e9ad413eaf41e91f5ce44649185b7e47eba3fc98bfaa5d51dd4b8c13c90b1368457c63399e574',
+  vgs: {
+    vaultId: 'tnty9bkue1i',
+    environment: VGSEnvironment.SANDBOX
+  }
 };
 
 /*
