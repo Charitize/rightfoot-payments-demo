@@ -54,7 +54,7 @@ export interface PlaidConfiguration {
  */
 export enum VGSEnvironment {
   SANDBOX = 'sandbox',
-  PRODUCTION = 'production'
+  PRODUCTION = 'live'
 }
 
 /**
